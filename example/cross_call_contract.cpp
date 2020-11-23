@@ -28,7 +28,7 @@ CONTRACT user : public platon::Contract {
         ACTION void init(){}
         ACTION bool call_add_message(const std::string &target_address, const my_message &one_message, 
             uint64_t transfer_value, uint64_t gas_value) {
-            platon::bytes paras = platon::cross_call_args("add_message", one_message);
+            platon::bytesConstRef paras = platon::cross_call_args("add_message", one_message);
             auto result = make_address(target_address);
             if(!result.second) return false;
             return platon::platon_call(result.first, paras, transfer_value, gas_value);
@@ -36,7 +36,7 @@ CONTRACT user : public platon::Contract {
 
         ACTION std::vector<my_message> delegate_call_add_message(const std::string &target_address, const my_message &one_message,
             uint64_t gas_value) {
-            platon::bytes paras = platon::cross_call_args("add_message", one_message);
+            platon::bytesConstRef paras = platon::cross_call_args("add_message", one_message);
             auto result = make_address(target_address);
             if(!result.second) return std::vector<my_message>();
             platon::platon_delegate_call(result.first, paras, gas_value);

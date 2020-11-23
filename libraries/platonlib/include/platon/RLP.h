@@ -212,7 +212,7 @@ class RLP {
   explicit operator int8_t() const { return toSignedInt<int8_t>(); }
   explicit operator int16_t() const { return toSignedInt<int16_t>(); }
   explicit operator int() const { return toSignedInt<int>(); }
-  explicit operator int32_t() const { return toSignedInt<int32_t>(); }
+  //  explicit operator int32_t() const { return toSignedInt<int32_t>(); }
   explicit operator int64_t() const { return toSignedInt<int64_t>(); }
   explicit operator int128_t() const { return toSignedInt<int128_t>(); }
   explicit operator float() const { return toFloat(); }
@@ -524,12 +524,12 @@ struct Converter<int> {
     return _r.toSignedInt<int>(_flags);
   }
 };
-template <>
-struct Converter<int32_t> {
-  static int32_t convert(RLP const& _r, int _flags) {
-    return _r.toSignedInt<int32_t>(_flags);
-  }
-};
+// template <>
+// struct Converter<int32_t> {
+//  static int32_t convert(RLP const& _r, int _flags) {
+//    return _r.toSignedInt<int32_t>(_flags);
+//  }
+//};
 template <>
 struct Converter<int64_t> {
   static int64_t convert(RLP const& _r, int _flags) {
@@ -615,7 +615,7 @@ class RLPStream {
   RLPStream& append(int8_t _c) { return append(int128_t(_c)); }
   RLPStream& append(int16_t _s) { return append(int128_t(_s)); }
   RLPStream& append(int _c) { return append(int128_t(_c)); }
-  RLPStream& append(int32_t _s) { return append(int128_t(_s)); }
+  //  RLPStream& append(int32_t _s) { return append(int128_t(_s)); }
   RLPStream& append(int64_t _s) { return append(int128_t(_s)); }
   RLPStream& append(int128_t _l) {
     uint128_t _i = uint128_t((_l << 1) ^ (_l >> 127));
@@ -726,7 +726,7 @@ class RLPStream {
  private:
   void noteAppended(size_t _itemCount = 1);
 
-  #ifdef OLD
+#ifdef OLD
   void pushCount(size_t _count, byte _base);
 
   /// Push an integer as a raw big-endian byte-stream.
@@ -736,7 +736,7 @@ class RLPStream {
     byte* b = &m_out.back();
     for (; _i; _i >>= 8) *(b--) = (byte)_i;
   }
-  #endif
+#endif
 
   /// Our output byte stream.
   BytesBuffer m_out;

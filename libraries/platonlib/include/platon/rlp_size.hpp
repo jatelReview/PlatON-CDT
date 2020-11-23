@@ -180,6 +180,30 @@ class RLPSize {
     return *this;
   }
 
+  RLPSize& append(const bytesConstRef& s) {
+    size_t total = 0;
+    if (s.empty()) {
+      total = 1;
+    } else {
+      const byte* d = s.data();
+      size_t size = s.size();
+      if (size == 1 && *d < c_rlpDataImmLenStart) {
+        total = 1;
+      } else if (size < c_rlpDataImmLenCount) {
+        total = size + 1;
+      } else {
+        total = size + bytesRequired(size) + 1;
+      }
+    }
+
+    if (pending_.size() > 0) {
+      pending_.top() += total;
+    } else {
+      size_ += total;
+    }
+    return *this;
+  }
+
   RLPSize& append(const std::string& s) {
     size_t total = 0;
     if (s.empty()) {

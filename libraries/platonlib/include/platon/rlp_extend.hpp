@@ -99,6 +99,9 @@ inline void fetch(const RLP& rlp, bool& value) { value = rlp.toBool(); }
 
 inline void fetch(const RLP& rlp, bytes& value) { value = rlp.toBytes(); }
 
+inline void fetch(const RLP& rlp, bytesConstRef& value) { value = rlp.toBytesConstRef(); }
+
+
 template <class T>
 inline void fetch(const RLP& rlp, std::vector<T>& ret) {
   if (rlp.isList()) {

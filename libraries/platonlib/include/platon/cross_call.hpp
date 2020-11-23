@@ -26,9 +26,13 @@ namespace platon {
  * @return Parameter byte array
  */
 template <typename... Args>
-inline bytes cross_call_args(const std::string &method, const Args &... args) {
+inline bytesConstRef cross_call_args(const std::string &method,
+                                     const Args &... args) {
   uint64_t t_method = Name(method).value;
-  RLPStream stream;
+  // The execution time of the contract is short, so there is no need for memory
+  // recovery. By means of reference, the copy times are reduced and Gas
+  // consumption is reduced
+  RLPStream &stream = *new RLPStream();
   std::tuple<Args...> tuple_args = std::make_tuple(args...);
   size_t num = sizeof...(Args);
   stream.appendList(num + 1);
@@ -38,7 +42,7 @@ inline bytes cross_call_args(const std::string &method, const Args &... args) {
   stream.reserve(rlps.size());
   stream << t_method;
   boost::fusion::for_each(tuple_args, [&](const auto &i) { stream << i; });
-  return bytes(stream.out().begin(), stream.out().end());
+  return bytesConstRef(stream.out().data(), stream.out().size());
 }
 
 /**
@@ -151,7 +155,7 @@ template <typename value_type, typename gas_type, typename... Args>
 inline bool platon_call(const Address &addr, const value_type &value,
                         const gas_type &gas, const std::string &method,
                         const Args &... args) {
-  bytes paras = cross_call_args(method, args...);
+  bytesConstRef paras = cross_call_args(method, args...);
   bytes value_bytes = value_to_bytes(value);
   bytes gas_bytes = value_to_bytes(gas);
   int32_t result =
@@ -187,9 +191,11 @@ inline bool platon_call(const Address &addr, const value_type &value,
  */
 template <typename return_type, typename value_type, typename gas_type,
           typename... Args>
-inline auto platon_call_with_return_value(const Address &addr, const value_type &value,
-                        const gas_type &gas, const std::string &method,
-                        const Args &... args) {
+inline auto platon_call_with_return_value(const Address &addr,
+                                          const value_type &value,
+                                          const gas_type &gas,
+                                          const std::string &method,
+                                          const Args &... args) {
   bool result = platon_call(addr, value, gas, method, args...);
   if (!result) {
     return std::pair<return_type, bool>(return_type(), false);
@@ -226,7 +232,7 @@ template <typename gas_type, typename... Args>
 inline bool platon_delegate_call(const Address &addr, const gas_type &gas,
                                  const std::string &method,
                                  const Args &... args) {
-  bytes paras = cross_call_args(method, args...);
+  bytesConstRef paras = cross_call_args(method, args...);
   bytes gas_bytes = value_to_bytes(gas);
   int32_t result =
       ::platon_delegate_call(addr.data(), paras.data(), paras.size(),
@@ -260,9 +266,10 @@ inline bool platon_delegate_call(const Address &addr, const gas_type &gas,
  * @endcode
  */
 template <typename return_type, typename gas_type, typename... Args>
-inline auto platon_delegate_call_with_return_value(const Address &addr, const gas_type &gas,
-                                 const std::string &method,
-                                 const Args &... args) {
+inline auto platon_delegate_call_with_return_value(const Address &addr,
+                                                   const gas_type &gas,
+                                                   const std::string &method,
+                                                   const Args &... args) {
   bool result = platon_delegate_call(addr, gas, method, args...);
   if (!result) {
     return std::pair<return_type, bool>(return_type(), false);
