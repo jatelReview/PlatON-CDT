@@ -51,7 +51,27 @@ template <class T>
 struct Converter {
   static T convert(RLP const&, int) { internal::platon_throw("bad cast"); }
 };
+class GasTest {
+  const char* origin_ = nullptr;
+  uint64_t gas_;
 
+ public:
+  GasTest() : gas_(platon_gas()) {}
+  GasTest(const char* origin) : origin_(origin), gas_(platon_gas()) {}
+
+  ~GasTest() { print(); }
+  void Reset(const char* origin) {
+    print();
+    origin_ = origin;
+    gas_ = platon_gas();
+  }
+  void print() {
+    uint64_t cost = gas_ - platon_gas();
+    printf("gas  origin:%s cost:%lld debug: 8000", origin_, cost);
+  }
+};
+#define TestGas(info) GasTest gas(#info);
+#define ResetGas(info) gas.Reset(#info);
 /**
  * Class for interpreting Recursive Linear-Prefix Data.
  */
@@ -74,7 +94,7 @@ class RLP {
   RLP() {}
 
   /// Construct a node of value given in the bytes.
-  explicit RLP(bytesConstRef _d, Strictness _s = VeryStrict);
+  explicit RLP(const bytesConstRef& _d, Strictness _s = VeryStrict);
 
   /// Construct a node of value given in the bytes.
   explicit RLP(bytes const& _d, Strictness _s = VeryStrict) : RLP(&_d, _s) {}
@@ -104,6 +124,7 @@ class RLP {
 
   /// String value.
   bool isData() const { return !isNull() && m_data[0] < c_rlpListStart; }
+  bool isDataSimple() const { return !isNull() && m_data[0] < c_rlpListStart; }
 
   /// List value.
   bool isList() const { return !isNull() && m_data[0] >= c_rlpListStart; }
@@ -266,7 +287,7 @@ class RLP {
       else
         return std::string();
     }
-    return payload().cropped(0, length()).toString();
+    return payload().toString();
   }
   /// Converts to string. @throws BadCast if not a string.
   std::string toStringStrict() const { return toString(Strict); }
@@ -276,7 +297,7 @@ class RLP {
     std::vector<T> ret;
     if (isList()) {
       ret.reserve(itemCount());
-      for (auto const& i : *this) ret.push_back(i.convert<T>(_flags));
+      for (auto const& i : *this) ret.emplace_back(i.convert<T>(_flags));
     } else if (_flags & ThrowOnFail)
       internal::platon_throw("bad cast");
     return ret;
@@ -286,7 +307,7 @@ class RLP {
   std::set<T> toSet(int _flags = LaissezFaire) const {
     std::set<T> ret;
     if (isList())
-      for (auto const& i : *this) ret.insert(i.convert<T>(_flags));
+      for (auto const& i : *this) ret.emplace(i.convert<T>(_flags));
     else if (_flags & ThrowOnFail)
       internal::platon_throw("bad cast");
     return ret;
@@ -296,7 +317,7 @@ class RLP {
   std::unordered_set<T> toUnorderedSet(int _flags = LaissezFaire) const {
     std::unordered_set<T> ret;
     if (isList())
-      for (auto const& i : *this) ret.insert(i.convert<T>(_flags));
+      for (auto const& i : *this) ret.emplace(i.convert<T>(_flags));
     else if (_flags & ThrowOnFail)
       internal::platon_throw("bad cast");
     return ret;
@@ -448,7 +469,7 @@ class RLP {
 
   /// @returns the size encoded into the RLP in @a _data and throws if _data is
   /// too short.
-  static size_t sizeAsEncoded(bytesConstRef _data) {
+  static size_t sizeAsEncoded(const bytesConstRef& _data) {
     return RLP(_data, int(ThrowOnFail) | int(FailIfTooSmall)).actualSize();
   }
 
@@ -652,7 +673,7 @@ class RLPStream {
   //  }
 
   /// Appends raw (pre-serialised) RLP data. Use with caution.
-  RLPStream& appendRaw(bytesConstRef _s, size_t _itemCount = 1);
+  RLPStream& appendRaw(const bytesConstRef& _s, size_t _itemCount = 1);
   RLPStream& appendRaw(bytes const& _rlp, size_t _itemCount = 1) {
     return appendRaw(&_rlp, _itemCount);
   }

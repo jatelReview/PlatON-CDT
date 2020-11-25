@@ -7,7 +7,7 @@ namespace platon {
 // bytes RLPNull = rlp("");
 // bytes RLPEmptyList = rlpList();
 
-RLP::RLP(bytesConstRef _d, Strictness _s) : m_data(_d) {
+RLP::RLP(const bytesConstRef& _d, Strictness _s) : m_data(_d) {
   if ((_s & FailIfTooBig) && actualSize() < _d.size()) {
     if (_s & ThrowOnFail)
       internal::platon_throw("over size rlp");
@@ -139,17 +139,16 @@ size_t RLP::length() const {
 }
 
 size_t RLP::items() const {
-  if (isList()) {
+
     bytesConstRef d = payload();
     size_t i = 0;
     for (; d.size(); ++i) d = d.cropped(sizeAsEncoded(d));
     return i;
-  }
-  return 0;
+
 }
 
 // RLPStream
-RLPStream& RLPStream::appendRaw(bytesConstRef _s, size_t _itemCount) {
+RLPStream& RLPStream::appendRaw(const bytesConstRef& _s, size_t _itemCount) {
   m_out.append(_s.begin(), _s.end());
   noteAppended(_itemCount);
   return *this;
@@ -179,7 +178,6 @@ void RLPStream::noteAppended(size_t _itemCount) {
 }
 
 RLPStream& RLPStream::appendList(size_t _items) {
-  //	cdebug << "appendList(" << _items << ")";
   if (_items)
     m_listStack.push_back(std::make_pair(_items, m_out.size()));
   else
@@ -220,34 +218,3 @@ RLPStream& RLPStream::append(bigint _i) {
   return *this;
 }
 }  // namespace platon
-
-// static void streamOut(std::ostream& _out, dev::RLP const& _d, unsigned _depth
-// = 0)
-//{
-//    if (_depth > 64)
-//        _out << "<max-depth-reached>";
-//    else if (_d.isNull())
-//        _out << "null";
-//    else if (_d.isInt())
-//        _out << std::showbase << std::hex << std::nouppercase <<
-//        _d.toInt<bigint>(RLP::LaissezFaire) << dec;
-//    else if (_d.isData())
-//        _out << escaped(_d.toString(), false);
-//    else if (_d.isList())
-//    {
-//        _out << "[";
-//        int j = 0;
-//        for (auto i: _d)
-//        {
-//            _out << (j++ ? ", " : " ");
-//            streamOut(_out, i, _depth + 1);
-//        }
-//        _out << " ]";
-//    }
-//}
-
-// std::ostream& dev::operator<<(std::ostream& _out, RLP const& _d)
-//{
-//    streamOut(_out, _d);
-//    return _out;
-//}
