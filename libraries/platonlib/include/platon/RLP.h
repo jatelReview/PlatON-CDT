@@ -51,27 +51,7 @@ template <class T>
 struct Converter {
   static T convert(RLP const&, int) { internal::platon_throw("bad cast"); }
 };
-class GasTest {
-  const char* origin_ = nullptr;
-  uint64_t gas_;
 
- public:
-  GasTest() : gas_(platon_gas()) {}
-  GasTest(const char* origin) : origin_(origin), gas_(platon_gas()) {}
-
-  ~GasTest() { print(); }
-  void Reset(const char* origin) {
-    print();
-    origin_ = origin;
-    gas_ = platon_gas();
-  }
-  void print() {
-    uint64_t cost = gas_ - platon_gas();
-    printf("gas  origin:%s cost:%lld debug: 8000", origin_, cost);
-  }
-};
-#define TestGas(info) GasTest gas(#info);
-#define ResetGas(info) gas.Reset(#info);
 /**
  * Class for interpreting Recursive Linear-Prefix Data.
  */
