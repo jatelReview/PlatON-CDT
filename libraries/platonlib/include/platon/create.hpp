@@ -24,7 +24,7 @@ std::pair<Address, bool> platon_create_contract(const bytes &code,
 
   // deploy args
   std::vector<byte> magic_number = {0x00, 0x61, 0x73, 0x6d};
-  bytesConstRef init_rlp = cross_call_args("init", init_args...);
+  bytes init_rlp = cross_call_args("init", init_args...);
   RLPSize rlps;
   rlps << code << init_rlp;
   RLPStream stream;
@@ -53,7 +53,7 @@ std::pair<Address, bool> platon_create_contract(const Address &address,
   bytes gas_bytes = value_to_bytes(gas);
 
   // init args
-  bytesConstRef init_rlp = cross_call_args("init", init_args...);
+  bytes init_rlp = cross_call_args("init", init_args...);
 
   // clone contract
   Address return_address;

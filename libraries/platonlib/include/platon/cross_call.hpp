@@ -26,13 +26,13 @@ namespace platon {
  * @return Parameter byte array
  */
 template <typename... Args>
-inline bytesConstRef cross_call_args(const std::string &method,
+inline bytes cross_call_args(const std::string &method,
                                      const Args &... args) {
   uint64_t t_method = Name(method).value;
   // The execution time of the contract is short, so there is no need for memory
   // recovery. By means of reference, the copy times are reduced and Gas
   // consumption is reduced
-  RLPStream &stream = *new RLPStream();
+  RLPStream stream;
   std::tuple<Args...> tuple_args = std::make_tuple(args...);
   size_t num = sizeof...(Args);
   stream.appendList(num + 1);
@@ -42,7 +42,7 @@ inline bytesConstRef cross_call_args(const std::string &method,
   stream.reserve(rlps.size());
   stream << t_method;
   boost::fusion::for_each(tuple_args, [&](const auto &i) { stream << i; });
-  return bytesConstRef(stream.out().data(), stream.out().size());
+  return stream.out().toBytes();
 }
 
 /**
@@ -155,7 +155,7 @@ template <typename value_type, typename gas_type, typename... Args>
 inline bool platon_call(const Address &addr, const value_type &value,
                         const gas_type &gas, const std::string &method,
                         const Args &... args) {
-  bytesConstRef paras = cross_call_args(method, args...);
+  bytes paras = cross_call_args(method, args...);
   bytes value_bytes = value_to_bytes(value);
   bytes gas_bytes = value_to_bytes(gas);
   int32_t result =
@@ -232,7 +232,7 @@ template <typename gas_type, typename... Args>
 inline bool platon_delegate_call(const Address &addr, const gas_type &gas,
                                  const std::string &method,
                                  const Args &... args) {
-  bytesConstRef paras = cross_call_args(method, args...);
+  bytes paras = cross_call_args(method, args...);
   bytes gas_bytes = value_to_bytes(gas);
   int32_t result =
       ::platon_delegate_call(addr.data(), paras.data(), paras.size(),
