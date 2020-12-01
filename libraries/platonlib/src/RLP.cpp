@@ -8,6 +8,7 @@ namespace platon {
 // bytes RLPEmptyList = rlpList();
 
 RLP::RLP(const bytesConstRef& _d, Strictness _s) : m_data(_d) {
+#ifdef RLP_CHECK_THROW
   if ((_s & FailIfTooBig) && actualSize() < _d.size()) {
     if (_s & ThrowOnFail)
       internal::platon_throw("over size rlp");
@@ -20,12 +21,14 @@ RLP::RLP(const bytesConstRef& _d, Strictness _s) : m_data(_d) {
     else
       m_data.reset();
   }
+#endif
 }
 
 RLP::iterator& RLP::iterator::operator++() {
   if (m_remaining) {
     m_currentItem.retarget(m_currentItem.next().data(), m_remaining);
-    m_currentItem = m_currentItem.cropped(0, sizeAsEncoded(m_currentItem));
+    size_t count = sizeAsEncoded(m_currentItem);
+    m_currentItem.retarget(m_currentItem.data(), count);
     m_remaining -= std::min<size_t>(m_remaining, m_currentItem.size());
   } else
     m_currentItem.retarget(m_currentItem.next().data(), 0);
@@ -58,18 +61,28 @@ RLP RLP::operator[](size_t _i) const {
 }
 
 size_t RLP::actualSize() const {
+  auto lengthSize = [this]() -> unsigned {
+    if (m_data[0] < c_rlpListStart && m_data[0] > c_rlpDataIndLenZero)
+      return m_data[0] - c_rlpDataIndLenZero;
+    if (m_data[0] >= c_rlpListStart && m_data[0] > c_rlpListIndLenZero)
+      return m_data[0] - c_rlpListIndLenZero;
+    return 0;
+  };
   if (isNull()) return 0;
-  if (isSingleByte()) return 1;
-  if (isData() || isList()) return payloadOffset() + length();
+  if (m_data[0] < c_rlpDataImmLenStart) return 1;
+  if (m_data[0] < c_rlpListStart || m_data[0] >= c_rlpListStart)
+    return (1 + lengthSize()) + length();
   return 0;
 }
 
 void RLP::requireGood() const {
+#ifdef RLP_CHECK_THROW
   if (isNull()) internal::platon_throw("bad rlp");
   byte n = m_data[0];
   if (n != c_rlpDataImmLenStart + 1) return;
   if (m_data.size() < 2) internal::platon_throw("bad rlp");
   if (m_data[1] < c_rlpDataImmLenStart) internal::platon_throw("bad rlp");
+#endif
 }
 
 bool RLP::isInt() const {
@@ -81,15 +94,18 @@ bool RLP::isInt() const {
   else if (n == c_rlpDataImmLenStart)
     return true;
   else if (n <= c_rlpDataIndLenZero) {
+#ifdef RLP_CHECK_THROW
     if (m_data.size() <= 1) internal::platon_throw("bad rlp");
+#endif
     return m_data[1] != 0;
   } else if (n < c_rlpListStart) {
+#ifdef RLP_CHECK_THROW
     if (m_data.size() <= size_t(1 + n - c_rlpDataIndLenZero))
       internal::platon_throw("bad rlp");
+#endif
     return m_data[1 + n - c_rlpDataIndLenZero] != 0;
   } else
     return false;
-  return false;
 }
 
 size_t RLP::length() const {
@@ -102,24 +118,30 @@ size_t RLP::length() const {
   else if (n <= c_rlpDataIndLenZero)
     return n - c_rlpDataImmLenStart;
   else if (n < c_rlpListStart) {
+#ifdef RLP_CHECK_THROW
     if (m_data.size() <= size_t(n - c_rlpDataIndLenZero))
       internal::platon_throw("bad rlp");
     if (m_data.size() > 1)
       if (m_data[1] == 0) internal::platon_throw("bad rlp");
+#endif
     unsigned lengthSize = n - c_rlpDataIndLenZero;
+#ifdef RLP_CHECK_THROW
     if (lengthSize > sizeof(ret))
       // We did not check, but would most probably not fit in our memory.
       internal::platon_throw("under size rlp");
-    // No leading zeroes.
-    if (!m_data[1]) internal::platon_throw("bad rlp");
-    for (unsigned i = 0; i < lengthSize; ++i) ret = (ret << 8) | m_data[i + 1];
+    No leading zeroes.if (!m_data[1]) internal::platon_throw("bad rlp");
+#endif
+    ret = decodeSize(lengthSize);
+#ifdef RLP_CHECK_THROW
     // Must be greater than the limit.
     if (ret < c_rlpListStart - c_rlpDataImmLenStart - c_rlpMaxLengthBytes)
       internal::platon_throw("bad rlp");
+#endif
   } else if (n <= c_rlpListIndLenZero)
     return n - c_rlpListStart;
   else {
     unsigned lengthSize = n - c_rlpListIndLenZero;
+#ifdef RLP_CHECK_THROW
     if (m_data.size() <= lengthSize) internal::platon_throw("bad rlp");
     if (m_data.size() > 1)
       if (m_data[1] == 0) internal::platon_throw("bad rlp");
@@ -127,24 +149,27 @@ size_t RLP::length() const {
       // We did not check, but would most probably not fit in our memory.
       internal::platon_throw("under size rlp");
     if (!m_data[1]) internal::platon_throw("bad rlp");
-    for (unsigned i = 0; i < lengthSize; ++i) ret = (ret << 8) | m_data[i + 1];
-    if (ret < 0x100 - c_rlpListStart - c_rlpMaxLengthBytes)
-      internal::platon_throw("bad rlp");
+#endif
+    ret = decodeSize(lengthSize);
+#ifdef RLP_CHECK_THROW
+    //    if (ret < 0x100 - c_rlpListStart - c_rlpMaxLengthBytes)
+    //      internal::platon_throw("bad rlp");
+#endif
   }
   // We have to be able to add payloadOffset to length without overflow.
   // This rejects roughly 4GB-sized RLPs on some platforms.
+#ifdef RLP_CHECK_THROW
   if (ret >= std::numeric_limits<size_t>::max() - 0x100)
     internal::platon_throw("under size rlp");
+#endif
   return ret;
 }
 
 size_t RLP::items() const {
-
-    bytesConstRef d = payload();
-    size_t i = 0;
-    for (; d.size(); ++i) d = d.cropped(sizeAsEncoded(d));
-    return i;
-
+  bytesConstRef d = payload();
+  size_t i = 0;
+  for (; d.size(); ++i) d = d.cropped(sizeAsEncoded(d));
+  return i;
 }
 
 // RLPStream

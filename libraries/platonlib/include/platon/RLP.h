@@ -64,6 +64,7 @@ class RLP {
     FailIfTooBig = 8,
     FailIfTooSmall = 16,
     Strict = ThrowOnFail | FailIfTooBig,
+    SmallStrict = ThrowOnFail | FailIfTooSmall,
     VeryStrict = ThrowOnFail | FailIfTooBig | FailIfTooSmall,
     LaissezFaire = AllowNonCanon
   };
@@ -251,22 +252,26 @@ class RLP {
   }
   /// Converts to bytearray. @returns the empty byte array if not a string.
   bytesConstRef toBytesConstRef(int _flags = LaissezFaire) const {
+#ifdef RLP_CHECK_THROW
     if (!isData()) {
       if (_flags & ThrowOnFail)
         internal::platon_throw("bad cast");
       else
         return bytesConstRef();
     }
-    return payload().cropped(0, length());
+#endif
+    return m_data.cropped(payloadOffset(), length());
   }
   /// Converts to string. @returns the empty string if not a string.
   std::string toString(int _flags = LaissezFaire) const {
+#ifdef RLP_CHECK_THROW
     if (!isData()) {
       if (_flags & ThrowOnFail)
         internal::platon_throw("bad cast");
       else
         return std::string();
     }
+#endif
     return payload().toString();
   }
   /// Converts to string. @throws BadCast if not a string.
@@ -340,21 +345,23 @@ class RLP {
   template <class _T = unsigned>
   _T toInt(int _flags = Strict) const {
     requireGood();
+#ifdef RLP_CHECK_THROW
     if ((!isInt() && !(_flags & AllowNonCanon)) || isList() || isNull()) {
       if (_flags & ThrowOnFail)
         internal::platon_throw("bad cast");
       else
         return 0;
     }
-
+#endif
     auto p = payload();
+#ifdef RLP_CHECK_THROW
     if (p.size() > intTraits<_T>::maxSize && (_flags & FailIfTooBig)) {
       if (_flags & ThrowOnFail)
         internal::platon_throw("bad cast");
       else
         return 0;
     }
-
+#endif
     return fromBigEndian<_T>(p);
   }
 
@@ -387,6 +394,7 @@ class RLP {
     requireGood();
     auto p = payload();
     auto l = p.size();
+#ifdef RLP_CHECK_THROW
     if (!isData() || (l > _N::size && (_flags & FailIfTooBig)) ||
         (l < _N::size && (_flags & FailIfTooSmall))) {
       if (_flags & ThrowOnFail)
@@ -394,7 +402,7 @@ class RLP {
       else
         return _N();
     }
-
+#endif
     _N ret;
     size_t s = std::min<size_t>(_N::size, l);
     memcpy(ret.data() + _N::size - s, p.data(), s);
@@ -404,7 +412,9 @@ class RLP {
   /// @returns the data payload. Valid for all types.
   bytesConstRef payload() const {
     auto l = length();
+#ifdef RLP_CHECK_THROW
     if (l > m_data.size()) internal::platon_throw("bad cast");
+#endif
     return m_data.cropped(payloadOffset(), l);
   }
 
@@ -414,6 +424,27 @@ class RLP {
   size_t actualSize() const;
 
  private:
+  size_t decodeSize(size_t length) const {
+    size_t pos = 1;
+    size_t len = 0;
+    switch (length) {
+      case 1:
+        len = m_data[pos];
+        break;
+      case 2:
+        len = size_t(m_data[pos]) << 8 | size_t(m_data[pos + 1]);
+        break;
+      case 3:
+        len = size_t(m_data[pos]) << 16 | size_t(m_data[pos + 1]) << 8 |
+              size_t(m_data[pos + 2]);
+        break;
+      case 4:
+        len = size_t(m_data[pos]) << 24 | size_t(m_data[pos + 1]) << 16 |
+              size_t(m_data[pos + 2]) << 8 | size_t(m_data[pos + 3]);
+    }
+    return len;
+  };
+
   /// Disable construction from rvalue
   explicit RLP(bytes const&&) {}
 
@@ -450,7 +481,7 @@ class RLP {
   /// @returns the size encoded into the RLP in @a _data and throws if _data is
   /// too short.
   static size_t sizeAsEncoded(const bytesConstRef& _data) {
-    return RLP(_data, int(ThrowOnFail) | int(FailIfTooSmall)).actualSize();
+    return RLP(_data, SmallStrict).actualSize();
   }
 
   /// Our byte data.
