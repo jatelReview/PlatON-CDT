@@ -152,8 +152,8 @@ size_t RLP::length() const {
 #endif
     ret = decodeSize(lengthSize);
 #ifdef RLP_CHECK_THROW
-    //    if (ret < 0x100 - c_rlpListStart - c_rlpMaxLengthBytes)
-    //      internal::platon_throw("bad rlp");
+    if (ret < 0x100 - c_rlpListStart - c_rlpMaxLengthBytes)
+      internal::platon_throw("bad rlp");
 #endif
   }
   // We have to be able to add payloadOffset to length without overflow.
