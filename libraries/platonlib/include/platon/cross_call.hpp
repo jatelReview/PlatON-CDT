@@ -29,9 +29,6 @@ template <typename... Args>
 inline bytes cross_call_args(const std::string &method,
                                      const Args &... args) {
   uint64_t t_method = Name(method).value;
-  // The execution time of the contract is short, so there is no need for memory
-  // recovery. By means of reference, the copy times are reduced and Gas
-  // consumption is reduced
   RLPStream stream;
   std::tuple<Args...> tuple_args = std::make_tuple(args...);
   size_t num = sizeof...(Args);
