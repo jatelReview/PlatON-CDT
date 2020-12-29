@@ -7,13 +7,13 @@
 #include "llvm/IR/Type.h"
 #include "llvm/Support/Format.h"
 #include "llvm/Support/raw_ostream.h"
-
+#include <iostream>
 #include <string>
 
 using namespace llvm;
 
 bool isVectorRef(DICompositeType* CT) {
-  return CT->getIdentifier().contains("vector_ref");
+  return CT->getIdentifier().startswith("_ZTSN6platon10vector_refIKhEE");
   
 }
 
