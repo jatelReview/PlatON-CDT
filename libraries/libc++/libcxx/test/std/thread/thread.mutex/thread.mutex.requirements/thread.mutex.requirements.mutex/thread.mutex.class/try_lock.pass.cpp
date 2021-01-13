@@ -7,6 +7,8 @@
 //===----------------------------------------------------------------------===//
 //
 // UNSUPPORTED: libcpp-has-no-threads
+//
+// ALLOW_RETRIES: 2
 
 // <mutex>
 
@@ -18,6 +20,8 @@
 #include <thread>
 #include <cstdlib>
 #include <cassert>
+
+#include "test_macros.h"
 
 std::mutex m;
 

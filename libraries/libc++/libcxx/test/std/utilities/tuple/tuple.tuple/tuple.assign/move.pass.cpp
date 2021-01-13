@@ -12,13 +12,14 @@
 
 // tuple& operator=(tuple&& u);
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 #include <memory>
 #include <tuple>
 #include <utility>
 #include <cassert>
 
+#include "test_macros.h"
 #include "MoveOnly.h"
 
 struct NonAssignable {

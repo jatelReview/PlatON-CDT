@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-// UNSUPPORTED: libcpp-has-no-threads, c++98, c++03, c++11, c++14
+// UNSUPPORTED: libcpp-has-no-threads, c++03, c++11, c++14
 
 // <atomic>
 
@@ -14,6 +14,8 @@
 
 #include <atomic>
 #include <cassert>
+
+#include "test_macros.h"
 
 #if !defined(__cpp_lib_atomic_is_always_lock_free)
 # error Feature test macro missing.

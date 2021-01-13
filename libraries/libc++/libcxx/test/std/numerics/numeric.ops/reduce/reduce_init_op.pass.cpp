@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 // <numeric>
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
 
 // template<class InputIterator, class T, class BinaryOperation>
 //   T reduce(InputIterator first, InputIterator last, T init, BinaryOperation op);
@@ -15,6 +15,7 @@
 #include <numeric>
 #include <cassert>
 
+#include "test_macros.h"
 #include "test_iterators.h"
 
 template <class Iter, class T, class Op>

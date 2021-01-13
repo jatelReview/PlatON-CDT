@@ -51,13 +51,12 @@ public:
     basic_ostream& operator<<(unsigned long n);
     basic_ostream& operator<<(long long n);
     basic_ostream& operator<<(unsigned long long n);
-#if defined(WASM_FLOAT_SUPPORT)
     basic_ostream& operator<<(float f);
     basic_ostream& operator<<(double f);
     basic_ostream& operator<<(long double f);
-#endif  // WASM_FLOAT_SUPPORT
     basic_ostream& operator<<(const void* p);
     basic_ostream& operator<<(basic_streambuf<char_type,traits>* sb);
+    basic_ostream& operator<<(nullptr_t);
 
     // 27.7.2.7 Unformatted output:
     basic_ostream& put(char_type c);
@@ -214,13 +213,15 @@ public:
     basic_ostream& operator<<(unsigned long __n);
     basic_ostream& operator<<(long long __n);
     basic_ostream& operator<<(unsigned long long __n);
-#if defined(WASM_FLOAT_SUPPORT)
     basic_ostream& operator<<(float __f);
     basic_ostream& operator<<(double __f);
     basic_ostream& operator<<(long double __f);
-#endif  // WASM_FLOAT_SUPPORT
     basic_ostream& operator<<(const void* __p);
     basic_ostream& operator<<(basic_streambuf<char_type, traits_type>* __sb);
+
+    _LIBCPP_INLINE_VISIBILITY
+    basic_ostream& operator<<(nullptr_t)
+    { return *this << "nullptr"; }
 
     // 27.7.2.7 Unformatted output:
     basic_ostream& put(char_type __c);
@@ -609,7 +610,6 @@ basic_ostream<_CharT, _Traits>::operator<<(unsigned long long __n)
     return *this;
 }
 
-#if defined(WASM_FLOAT_SUPPORT)
 template <class _CharT, class _Traits>
 basic_ostream<_CharT, _Traits>&
 basic_ostream<_CharT, _Traits>::operator<<(float __n)
@@ -687,7 +687,6 @@ basic_ostream<_CharT, _Traits>::operator<<(long double __n)
 #endif  // _LIBCPP_NO_EXCEPTIONS
     return *this;
 }
-#endif  // WASM_FLOAT_SUPPORT
 
 template <class _CharT, class _Traits>
 basic_ostream<_CharT, _Traits>&
@@ -1000,7 +999,7 @@ basic_ostream<_CharT, _Traits>::seekp(off_type __off, ios_base::seekdir __dir)
 }
 
 template <class _CharT, class _Traits>
-inline _LIBCPP_INLINE_VISIBILITY
+inline
 basic_ostream<_CharT, _Traits>&
 endl(basic_ostream<_CharT, _Traits>& __os)
 {
@@ -1010,7 +1009,7 @@ endl(basic_ostream<_CharT, _Traits>& __os)
 }
 
 template <class _CharT, class _Traits>
-inline _LIBCPP_INLINE_VISIBILITY
+inline
 basic_ostream<_CharT, _Traits>&
 ends(basic_ostream<_CharT, _Traits>& __os)
 {
@@ -1019,7 +1018,7 @@ ends(basic_ostream<_CharT, _Traits>& __os)
 }
 
 template <class _CharT, class _Traits>
-inline _LIBCPP_INLINE_VISIBILITY
+inline
 basic_ostream<_CharT, _Traits>&
 flush(basic_ostream<_CharT, _Traits>& __os)
 {
@@ -1056,7 +1055,7 @@ operator<<(basic_ostream<_CharT, _Traits>& __os,
 template<class _CharT, class _Traits>
 basic_ostream<_CharT, _Traits>&
 operator<<(basic_ostream<_CharT, _Traits>& __os,
-           const basic_string_view<_CharT, _Traits> __sv)
+           basic_string_view<_CharT, _Traits> __sv)
 {
     return _VSTD::__put_character_sequence(__os, __sv.data(), __sv.size());
 }

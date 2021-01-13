@@ -5,11 +5,13 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // test quick_exit and at_quick_exit
 
 #include <cstdlib>
+
+#include "test_macros.h"
 
 void f() {}
 

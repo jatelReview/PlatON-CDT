@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
 
 // <any>
 
@@ -14,6 +14,8 @@
 
 #include <any>
 #include <type_traits>
+
+#include "test_macros.h"
 
 int main(int, char**) {
     static_assert(!std::is_literal_type<std::any>::value, "");

@@ -126,7 +126,7 @@ public:
     wbuffer_convert(const wbuffer_convert&) = delete;               // C++14
     wbuffer_convert & operator=(const wbuffer_convert &) = delete;  // C++14
     ~wbuffer_convert();                                             // C++14
-    
+
     streambuf* rdbuf() const;
     streambuf* rdbuf(streambuf* bytebuf);
 
@@ -626,7 +626,6 @@ public:
         return do_get(__b, __e, __iob, __err, __v);
     }
 
-#if defined(WASM_FLOAT_SUPPORT)
     _LIBCPP_INLINE_VISIBILITY
     iter_type get(iter_type __b, iter_type __e, ios_base& __iob,
                   ios_base::iostate& __err, float& __v) const
@@ -647,7 +646,6 @@ public:
     {
         return do_get(__b, __e, __iob, __err, __v);
     }
-#endif
 
     _LIBCPP_INLINE_VISIBILITY
     iter_type get(iter_type __b, iter_type __e, ios_base& __iob,
@@ -708,7 +706,6 @@ protected:
                              ios_base::iostate& __err, unsigned long long& __v) const
     { return this->__do_get_unsigned ( __b, __e, __iob, __err, __v ); }
 
-#if defined(WASM_FLOAT_SUPPORT)
     virtual iter_type do_get(iter_type __b, iter_type __e, ios_base& __iob,
                              ios_base::iostate& __err, float& __v) const
     { return this->__do_get_floating_point ( __b, __e, __iob, __err, __v ); }
@@ -720,7 +717,6 @@ protected:
     virtual iter_type do_get(iter_type __b, iter_type __e, ios_base& __iob,
                              ios_base::iostate& __err, long double& __v) const
     { return this->__do_get_floating_point ( __b, __e, __iob, __err, __v ); }
-#endif
 
     virtual iter_type do_get(iter_type __b, iter_type __e, ios_base& __iob,
                              ios_base::iostate& __err, void*& __v) const;
@@ -1306,7 +1302,6 @@ public:
         return do_put(__s, __iob, __fl, __v);
     }
 
-#if defined(WASM_FLOAT_SUPPORT)
     _LIBCPP_INLINE_VISIBILITY
     iter_type put(iter_type __s, ios_base& __iob, char_type __fl,
                   double __v) const
@@ -1320,7 +1315,6 @@ public:
     {
         return do_put(__s, __iob, __fl, __v);
     }
-#endif
 
     _LIBCPP_INLINE_VISIBILITY
     iter_type put(iter_type __s, ios_base& __iob, char_type __fl,
@@ -1345,12 +1339,10 @@ protected:
                              unsigned long) const;
     virtual iter_type do_put(iter_type __s, ios_base& __iob, char_type __fl,
                              unsigned long long) const;
-#if defined(WASM_FLOAT_SUPPORT)
     virtual iter_type do_put(iter_type __s, ios_base& __iob, char_type __fl,
                              double __v) const;
     virtual iter_type do_put(iter_type __s, ios_base& __iob, char_type __fl,
                              long double __v) const;
-#endif
     virtual iter_type do_put(iter_type __s, ios_base& __iob, char_type __fl,
                              const void* __v) const;
 };
@@ -1381,10 +1373,6 @@ __pad_and_output(_OutputIterator __s,
     __iob.width(0);
     return __s;
 }
-
-#if !defined(__APPLE__) || \
-    (defined(__MAC_OS_X_VERSION_MIN_REQUIRED) && __MAC_OS_X_VERSION_MIN_REQUIRED > __MAC_10_8) || \
-    (defined(__IPHONE_OS_VERSION_MIN_REQUIRED) && __IPHONE_OS_VERSION_MIN_REQUIRED > __IPHONE_6_0)
 
 template <class _CharT, class _Traits>
 _LIBCPP_HIDDEN
@@ -1431,8 +1419,6 @@ __pad_and_output(ostreambuf_iterator<_CharT, _Traits> __s,
     __iob.width(0);
     return __s;
 }
-
-#endif
 
 template <class _CharT, class _OutputIterator>
 _OutputIterator
@@ -1562,7 +1548,6 @@ num_put<_CharT, _OutputIterator>::do_put(iter_type __s, ios_base& __iob,
     return __pad_and_output(__s, __o, __op, __oe, __iob, __fl);
 }
 
-#if defined(WASM_FLOAT_SUPPORT)
 template <class _CharT, class _OutputIterator>
 _OutputIterator
 num_put<_CharT, _OutputIterator>::do_put(iter_type __s, ios_base& __iob,
@@ -1664,7 +1649,6 @@ num_put<_CharT, _OutputIterator>::do_put(iter_type __s, ios_base& __iob,
     __s = __pad_and_output(__s, __ob, __op, __oe, __iob, __fl);
     return __s;
 }
-#endif
 
 template <class _CharT, class _OutputIterator>
 _OutputIterator
@@ -2814,14 +2798,12 @@ public:
     explicit money_get(size_t __refs = 0)
         : locale::facet(__refs) {}
 
-#if defined(WASM_FLOAT_SUPPORT)
     _LIBCPP_INLINE_VISIBILITY
     iter_type get(iter_type __b, iter_type __e, bool __intl, ios_base& __iob,
                   ios_base::iostate& __err, long double& __v) const
     {
         return do_get(__b, __e, __intl, __iob, __err, __v);
     }
-#endif
 
     _LIBCPP_INLINE_VISIBILITY
     iter_type get(iter_type __b, iter_type __e, bool __intl, ios_base& __iob,
@@ -2837,11 +2819,9 @@ protected:
     _LIBCPP_INLINE_VISIBILITY
     ~money_get() {}
 
-#if defined(WASM_FLOAT_SUPPORT)
     virtual iter_type do_get(iter_type __b, iter_type __e, bool __intl,
                              ios_base& __iob, ios_base::iostate& __err,
                              long double& __v) const;
-#endif
     virtual iter_type do_get(iter_type __b, iter_type __e, bool __intl,
                              ios_base& __iob, ios_base::iostate& __err,
                              string_type& __v) const;
@@ -3107,7 +3087,6 @@ money_get<_CharT, _InputIterator>::__do_get(iter_type& __b, iter_type __e,
     return true;
 }
 
-#if defined(WASM_FLOAT_SUPPORT)
 template <class _CharT, class _InputIterator>
 _InputIterator
 money_get<_CharT, _InputIterator>::do_get(iter_type __b, iter_type __e,
@@ -3151,7 +3130,6 @@ money_get<_CharT, _InputIterator>::do_get(iter_type __b, iter_type __e,
         __err |= ios_base::eofbit;
     return __b;
 }
-#endif
 
 template <class _CharT, class _InputIterator>
 _InputIterator
@@ -3378,14 +3356,12 @@ public:
     explicit money_put(size_t __refs = 0)
         : locale::facet(__refs) {}
 
-#if defined(WASM_FLOAT_SUPPORT)
     _LIBCPP_INLINE_VISIBILITY
     iter_type put(iter_type __s, bool __intl, ios_base& __iob, char_type __fl,
                   long double __units) const
     {
         return do_put(__s, __intl, __iob, __fl, __units);
     }
-#endif
 
     _LIBCPP_INLINE_VISIBILITY
     iter_type put(iter_type __s, bool __intl, ios_base& __iob, char_type __fl,
@@ -3400,10 +3376,8 @@ protected:
     _LIBCPP_INLINE_VISIBILITY
     ~money_put() {}
 
-#if defined(WASM_FLOAT_SUPPORT)
     virtual iter_type do_put(iter_type __s, bool __intl, ios_base& __iob,
                              char_type __fl, long double __units) const;
-#endif
     virtual iter_type do_put(iter_type __s, bool __intl, ios_base& __iob,
                              char_type __fl, const string_type& __digits) const;
 };
@@ -3412,7 +3386,6 @@ template <class _CharT, class _OutputIterator>
 locale::id
 money_put<_CharT, _OutputIterator>::id;
 
-#if defined(WASM_FLOAT_SUPPORT)
 template <class _CharT, class _OutputIterator>
 _OutputIterator
 money_put<_CharT, _OutputIterator>::do_put(iter_type __s, bool __intl,
@@ -3476,7 +3449,6 @@ money_put<_CharT, _OutputIterator>::do_put(iter_type __s, bool __intl,
                    __neg, __pat, __dp, __ts, __grp, __sym, __sn, __fd);
     return __pad_and_output(__s, __mb, __mi, __me, __iob, __fl);
 }
-#endif
 
 template <class _CharT, class _OutputIterator>
 _OutputIterator
@@ -3953,7 +3925,7 @@ private:
     wbuffer_convert(const wbuffer_convert&);
     wbuffer_convert& operator=(const wbuffer_convert&);
 public:
-    _LIBCPP_EXPLICIT_AFTER_CXX11 wbuffer_convert(streambuf* __bytebuf = 0, 
+    _LIBCPP_EXPLICIT_AFTER_CXX11 wbuffer_convert(streambuf* __bytebuf = 0,
             _Codecvt* __pcvt = new _Codecvt, state_type __state = state_type());
     ~wbuffer_convert();
 
@@ -4068,7 +4040,7 @@ wbuffer_convert<_Codecvt, _Elem, _Tr>::underflow()
                                        this->egptr(), __inext);
                 if (__r == codecvt_base::noconv)
                 {
-                    this->setg((char_type*)__extbuf_, (char_type*)__extbuf_, 
+                    this->setg((char_type*)__extbuf_, (char_type*)__extbuf_,
                                (char_type*) const_cast<char *>(__extbufend_));
                     __c = *this->gptr();
                 }

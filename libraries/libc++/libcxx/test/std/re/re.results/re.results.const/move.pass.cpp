@@ -5,7 +5,7 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 // <regex>
 
 // class match_results<BidirectionalIterator, Allocator>
@@ -31,7 +31,7 @@ test(const Allocator& a)
 
     SM m1(std::move(m0));
     assert(m1.size() == 0);
-    assert(m1.str() == std::basic_string<CharT>());
+    assert(!m1.ready());
     assert(m1.get_allocator() == a);
 }
 

@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 //
 // UNSUPPORTED: libcpp-has-no-threads
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <future>
 
@@ -27,6 +27,8 @@
 #include <thread>
 #include <memory>
 #include <cassert>
+
+#include "test_macros.h"
 
 int f_async() {
     typedef std::chrono::milliseconds ms;

@@ -10,12 +10,13 @@
 
 // template <class... Args> iterator emplace(const_iterator p, Args&&... args);
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 #include <deque>
 #include <cassert>
 #include <cstddef>
 
+#include "test_macros.h"
 #include "../../../Emplaceable.h"
 #include "min_allocator.h"
 

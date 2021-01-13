@@ -6,6 +6,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+// FILE_DEPENDENCIES: test.dat, test2.dat
+
 // <fstream>
 
 // template <class charT, class traits = char_traits<charT> >
@@ -16,6 +18,8 @@
 
 #include <fstream>
 #include <cassert>
+
+#include "test_macros.h"
 
 int main(int, char**)
 {

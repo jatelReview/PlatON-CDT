@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11
+// UNSUPPORTED: c++03, c++11
 
 // <experimental/coroutine>
 
@@ -19,6 +19,8 @@
 #include <experimental/coroutine>
 #include <type_traits>
 #include <cassert>
+
+#include "test_macros.h"
 
 namespace coro = std::experimental;
 

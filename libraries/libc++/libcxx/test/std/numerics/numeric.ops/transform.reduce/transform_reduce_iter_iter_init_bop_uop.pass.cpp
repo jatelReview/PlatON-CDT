@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 // <numeric>
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
 
 // template <class InputIterator1, class T,
 //           class BinaryOperation, class UnaryOperation>
@@ -20,6 +20,7 @@
 #include <utility>
 #include <iterator>
 
+#include "test_macros.h"
 #include "MoveOnly.h"
 #include "test_iterators.h"
 

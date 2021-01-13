@@ -56,11 +56,17 @@
 #   error "__cpp_lib_destroying_delete should not be defined before c++2a"
 # endif
 
-# ifndef __cpp_lib_hardware_interference_size
-#   error "__cpp_lib_hardware_interference_size should be defined in c++17"
-# endif
-# if __cpp_lib_hardware_interference_size != 201703L
-#   error "__cpp_lib_hardware_interference_size should have the value 201703L in c++17"
+# if !defined(_LIBCPP_VERSION)
+#   ifndef __cpp_lib_hardware_interference_size
+#     error "__cpp_lib_hardware_interference_size should be defined in c++17"
+#   endif
+#   if __cpp_lib_hardware_interference_size != 201703L
+#     error "__cpp_lib_hardware_interference_size should have the value 201703L in c++17"
+#   endif
+# else // _LIBCPP_VERSION
+#   ifdef __cpp_lib_hardware_interference_size
+#     error "__cpp_lib_hardware_interference_size should not be defined because it is unimplemented in libc++!"
+#   endif
 # endif
 
 # ifndef __cpp_lib_launder
@@ -72,24 +78,30 @@
 
 #elif TEST_STD_VER > 17
 
-# if !defined(_LIBCPP_VERSION)
+# if TEST_STD_VER > 17 && defined(__cpp_impl_destroying_delete) && __cpp_impl_destroying_delete >= 201806L
 #   ifndef __cpp_lib_destroying_delete
 #     error "__cpp_lib_destroying_delete should be defined in c++2a"
 #   endif
 #   if __cpp_lib_destroying_delete != 201806L
 #     error "__cpp_lib_destroying_delete should have the value 201806L in c++2a"
 #   endif
-# else // _LIBCPP_VERSION
+# else
 #   ifdef __cpp_lib_destroying_delete
-#     error "__cpp_lib_destroying_delete should not be defined because it is unimplemented in libc++!"
+#     error "__cpp_lib_destroying_delete should not be defined when TEST_STD_VER > 17 && defined(__cpp_impl_destroying_delete) && __cpp_impl_destroying_delete >= 201806L is not defined!"
 #   endif
 # endif
 
-# ifndef __cpp_lib_hardware_interference_size
-#   error "__cpp_lib_hardware_interference_size should be defined in c++2a"
-# endif
-# if __cpp_lib_hardware_interference_size != 201703L
-#   error "__cpp_lib_hardware_interference_size should have the value 201703L in c++2a"
+# if !defined(_LIBCPP_VERSION)
+#   ifndef __cpp_lib_hardware_interference_size
+#     error "__cpp_lib_hardware_interference_size should be defined in c++2a"
+#   endif
+#   if __cpp_lib_hardware_interference_size != 201703L
+#     error "__cpp_lib_hardware_interference_size should have the value 201703L in c++2a"
+#   endif
+# else // _LIBCPP_VERSION
+#   ifdef __cpp_lib_hardware_interference_size
+#     error "__cpp_lib_hardware_interference_size should not be defined because it is unimplemented in libc++!"
+#   endif
 # endif
 
 # ifndef __cpp_lib_launder

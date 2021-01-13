@@ -13,11 +13,12 @@
 // template <class Alloc>
 //   tuple(allocator_arg_t, const Alloc& a, const tuple&);
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 #include <tuple>
 #include <cassert>
 
+#include "test_macros.h"
 #include "allocators.h"
 #include "../alloc_first.h"
 #include "../alloc_last.h"

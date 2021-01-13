@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11
+// UNSUPPORTED: c++03, c++11
 // UNSUPPORTED: ubsan
 
 // <experimental/coroutine>
@@ -18,6 +18,8 @@
 #include <experimental/coroutine>
 #include <cassert>
 #include <type_traits>
+
+#include "test_macros.h"
 
 #if __has_builtin(__builtin_coro_noop)
 

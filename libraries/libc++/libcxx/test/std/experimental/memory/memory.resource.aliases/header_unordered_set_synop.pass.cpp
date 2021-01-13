@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <experimental/unordered_set>
 
@@ -26,6 +26,8 @@
 #include <experimental/memory_resource>
 #include <type_traits>
 #include <cassert>
+
+#include "test_macros.h"
 
 namespace pmr = std::experimental::pmr;
 

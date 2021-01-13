@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 // Can't test the system lib because this test enables debug mode
-// UNSUPPORTED: with_system_cxx_lib
+// UNSUPPORTED: with_system_cxx_lib=macosx
 
 // <list>
 
@@ -19,6 +19,8 @@
 #include <list>
 #include <cassert>
 #include <cstdlib>
+
+#include "test_macros.h"
 
 int main(int, char**)
 {

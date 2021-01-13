@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 // <functional>
-// REQUIRES: c++98 || c++03 || c++11 || c++14
+// REQUIRES: c++03 || c++11 || c++14
 
 // pointer_to_binary_function
 
@@ -16,6 +16,8 @@
 #include <functional>
 #include <type_traits>
 #include <cassert>
+
+#include "test_macros.h"
 
 double binary_f(int i, short j) {return i - j + .75;}
 

@@ -12,9 +12,6 @@
 
 // iter_type put(iter_type s, ios_base& iob, char_type fill, long double v) const;
 
-// TODO(EricWF): This test takes 40+ minutes to build with Clang 3.8 under ASAN or MSAN.
-// UNSUPPORTED: asan, msan
-
 // TODO GLIBC uses a different string for positive and negative NAN numbers.
 // XFAIL: linux-gnu
 
@@ -23,6 +20,7 @@
 #include <cassert>
 #include <streambuf>
 #include <cmath>
+#include "test_macros.h"
 #include "test_iterators.h"
 
 typedef std::num_put<char, output_iterator<char*> > F;

@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 //
 // UNSUPPORTED: libcpp-has-no-threads
-// XFAIL: c++98, c++03
+// XFAIL: c++03
 
 // <atomic>
 
@@ -17,6 +17,8 @@
 
 #include <atomic>
 #include <cassert>
+
+#include "test_macros.h"
 
 int main(int, char**)
 {

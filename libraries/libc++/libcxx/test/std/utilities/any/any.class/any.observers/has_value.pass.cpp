@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
 
 // <any>
 
@@ -15,6 +15,7 @@
 #include <any>
 #include <cassert>
 
+#include "test_macros.h"
 #include "any_helpers.h"
 
 int main(int, char**)

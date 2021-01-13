@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 //
 // UNSUPPORTED: libcpp-has-no-threads
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <future>
 
@@ -18,6 +18,8 @@
 #include <future>
 #include <memory>
 #include <cassert>
+
+#include "test_macros.h"
 
 int i = 0;
 

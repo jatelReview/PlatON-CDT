@@ -5,8 +5,9 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
-//
+
 // UNSUPPORTED: libcpp-has-no-threads
+// ALLOW_RETRIES: 2
 
 // <mutex>
 
@@ -19,6 +20,8 @@
 #include <thread>
 #include <cstdlib>
 #include <cassert>
+
+#include "test_macros.h"
 
 std::timed_mutex m;
 

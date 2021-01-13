@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 // <numeric>
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
 
 // template<class InputIterator, class OutputIterator, class T,
 //          class BinaryOperation, class UnaryOperation>
@@ -26,6 +26,7 @@
 #include <iterator>
 #include <vector>
 
+#include "test_macros.h"
 #include "test_iterators.h"
 
 struct add_one {

@@ -8,7 +8,7 @@
 //
 // UNSUPPORTED: libcpp-has-no-threads
 
-// FLAKY_TEST.
+// ALLOW_RETRIES: 2
 
 // <condition_variable>
 
@@ -24,6 +24,8 @@
 #include <thread>
 #include <chrono>
 #include <cassert>
+
+#include "test_macros.h"
 
 std::condition_variable cv;
 std::mutex mut;

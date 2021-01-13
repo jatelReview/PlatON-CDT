@@ -114,7 +114,6 @@ _LIBCPP_BEGIN_NAMESPACE_STD
 
 using ::mbstate_t;
 using ::size_t;
-#ifdef NO_ONTOLOGY_WASM
 using ::tm;
 using ::wint_t;
 using ::FILE;
@@ -186,7 +185,6 @@ using ::wscanf;
 using ::putwchar;
 using ::vwprintf;
 using ::wprintf;
-#endif
 #endif
 
 _LIBCPP_END_NAMESPACE_STD

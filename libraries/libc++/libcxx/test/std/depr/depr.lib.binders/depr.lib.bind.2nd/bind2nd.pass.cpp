@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 // <functional>
-// REQUIRES: c++98 || c++03 || c++11 || c++14
+// REQUIRES: c++03 || c++11 || c++14
 
 // template <class Fn, class T>
 //   binder2nd<Fn>
@@ -18,6 +18,7 @@
 #include <functional>
 #include <cassert>
 
+#include "test_macros.h"
 #include "../test_func.h"
 
 int main(int, char**)

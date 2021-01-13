@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <tuple>
 
@@ -16,6 +16,8 @@
 // See llvm.org/PR31384
 #include <tuple>
 #include <cassert>
+
+#include "test_macros.h"
 
 int count = 0;
 

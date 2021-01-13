@@ -4,7 +4,7 @@ project(libc++)
 
 SET(SRC_FILENAMES algorithm.cpp any.cpp bind.cpp condition_variable.cpp functional.cpp
                   future.cpp ios.cpp iostream.cpp locale.cpp memory.cpp mutex.cpp new.cpp optional.cpp
-                  regex.cpp stdexcept.cpp string.cpp strstream.cpp system_error.cpp exception.cpp
+                  regex.cpp stdexcept.cpp charconv.cpp string.cpp strstream.cpp system_error.cpp exception.cpp
                   typeinfo.cpp utility.cpp valarray.cpp variant.cpp vector.cpp platon.cpp)
 
 SET(SRC_FILES "")

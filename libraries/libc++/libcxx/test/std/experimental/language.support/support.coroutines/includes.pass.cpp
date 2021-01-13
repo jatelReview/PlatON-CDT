@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11
+// UNSUPPORTED: c++03, c++11
 
 // <experimental/coroutine>
 
@@ -19,6 +19,7 @@ int main(int, char**) {
   // std::nothrow is not implicitly defined by the compiler when the include is
   // missing, unlike other parts of <new>. Therefore we use std::nothrow to
   // test for #include <new>
+
   (void)std::nothrow;
 
   return 0;

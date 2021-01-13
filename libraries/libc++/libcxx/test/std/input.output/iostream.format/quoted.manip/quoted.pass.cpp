@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11
+// UNSUPPORTED: c++03, c++11
 
 // <iomanip>
 
@@ -16,6 +16,8 @@
 #include <sstream>
 #include <string>
 #include <cassert>
+
+#include "test_macros.h"
 
 template <class CharT, class Traits>
 bool is_skipws ( const std::basic_istream<CharT, Traits>& is ) {

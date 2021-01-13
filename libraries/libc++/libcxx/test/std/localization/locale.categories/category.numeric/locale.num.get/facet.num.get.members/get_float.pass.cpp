@@ -5,9 +5,6 @@
 // SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 //
 //===----------------------------------------------------------------------===//
-//
-// PR11871
-// XFAIL: with_system_cxx_lib=macosx10.7
 
 // <locale>
 
@@ -21,6 +18,7 @@
 #include <cassert>
 #include <streambuf>
 #include <cmath>
+#include "test_macros.h"
 #include "test_iterators.h"
 #include "hexfloat.h"
 

@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
 // <optional>
 
 // template <class T, class... Args>
@@ -16,6 +16,8 @@
 #include <string>
 #include <memory>
 #include <cassert>
+
+#include "test_macros.h"
 
 int main(int, char**)
 {
@@ -38,7 +40,7 @@ int main(int, char**)
         assert(s == nullptr);
     }
     {
-        auto opt = make_optional<std::string>(4, 'X');
+        auto opt = make_optional<std::string>(4u, 'X');
         assert(*opt == "XXXX");
     }
 

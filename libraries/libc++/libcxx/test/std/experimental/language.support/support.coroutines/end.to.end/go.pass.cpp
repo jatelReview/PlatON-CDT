@@ -7,10 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11
+// UNSUPPORTED: c++03, c++11
 
 #include <experimental/coroutine>
 #include <cassert>
+
+#include "test_macros.h"
 
 using namespace std::experimental;
 
@@ -44,9 +46,7 @@ struct goroutine
     suspend_never initial_suspend() {
       return {};
     }
-    suspend_never final_suspend() {
-      return {};
-    }
+    suspend_never final_suspend() noexcept { return {}; }
     void return_void() {}
     goroutine get_return_object() {
       return{};

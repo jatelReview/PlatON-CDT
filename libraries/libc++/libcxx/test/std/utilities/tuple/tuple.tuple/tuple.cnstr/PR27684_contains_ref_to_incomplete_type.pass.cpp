@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <tuple>
 
@@ -22,6 +22,8 @@
 
 #include <tuple>
 #include <cassert>
+
+#include "test_macros.h"
 
 struct IncompleteType;
 extern IncompleteType inc1;

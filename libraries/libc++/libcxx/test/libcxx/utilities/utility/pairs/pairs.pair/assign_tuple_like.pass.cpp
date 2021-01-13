@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <utility>
 
@@ -20,7 +20,9 @@
 #include <memory>
 #include <cassert>
 
-#include "archetypes.hpp"
+#include "archetypes.h"
+
+#include "test_macros.h"
 
 // Clang warns about missing braces when initializing std::array.
 #if defined(__clang__)

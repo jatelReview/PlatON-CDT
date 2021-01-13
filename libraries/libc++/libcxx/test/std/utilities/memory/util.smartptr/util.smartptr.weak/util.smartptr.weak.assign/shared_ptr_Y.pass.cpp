@@ -16,6 +16,8 @@
 #include <type_traits>
 #include <cassert>
 
+#include "test_macros.h"
+
 struct B
 {
     static int count;
@@ -43,6 +45,7 @@ int main(int, char**)
 {
     {
         const std::shared_ptr<A> pA(new A);
+        assert(pA.use_count() == 1);
         {
             std::weak_ptr<B> pB;
             pB = pA;

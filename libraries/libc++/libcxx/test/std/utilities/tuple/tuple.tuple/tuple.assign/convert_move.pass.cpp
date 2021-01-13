@@ -13,13 +13,15 @@
 // template <class... UTypes>
 //   tuple& operator=(tuple<UTypes...>&& u);
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 #include <tuple>
 #include <string>
 #include <memory>
 #include <utility>
 #include <cassert>
+
+#include "test_macros.h"
 
 struct B
 {
@@ -96,7 +98,7 @@ int main(int, char**)
     }
     {
         // Test that tuple evaluates correctly applies an lvalue reference
-        // before evaluating is_assignable (ie 'is_assignable<int&, int&&>')
+        // before evaluating is_assignable (i.e. 'is_assignable<int&, int&&>')
         // instead of evaluating 'is_assignable<int&&, int&&>' which is false.
         int x = 42;
         int y = 43;

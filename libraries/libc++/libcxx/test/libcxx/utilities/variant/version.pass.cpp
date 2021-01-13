@@ -8,7 +8,13 @@
 
 // <variant>
 
+// GCC 5 pretends it supports C++17, but it doesn't properly support it, and
+// <variant> fails.
+// UNSUPPORTED: gcc-5
+
 #include <variant>
+
+#include "test_macros.h"
 
 #ifndef _LIBCPP_VERSION
 #error _LIBCPP_VERSION not defined

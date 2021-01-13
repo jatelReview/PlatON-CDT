@@ -7,18 +7,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-// MODULES_DEFINES: _LIBCPP_DEBUG=0
+// ADDITIONAL_COMPILE_FLAGS: -D_LIBCPP_DEBUG=0
 
 // Can't test the system lib because this test enables debug mode
-// UNSUPPORTED: with_system_cxx_lib
+// UNSUPPORTED: with_system_cxx_lib=macosx
 
 // Test that the default debug handler aborts the program.
-
-#define _LIBCPP_DEBUG 0
 
 #include <csignal>
 #include <cstdlib>
 #include <__debug>
+
+#include "test_macros.h"
 
 void signal_handler(int signal)
 {

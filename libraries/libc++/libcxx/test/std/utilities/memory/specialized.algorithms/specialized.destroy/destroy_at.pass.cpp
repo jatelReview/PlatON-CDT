@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
 
 // <memory>
 
@@ -16,6 +16,8 @@
 #include <memory>
 #include <cstdlib>
 #include <cassert>
+
+#include "test_macros.h"
 
 struct Counted {
   static int count;

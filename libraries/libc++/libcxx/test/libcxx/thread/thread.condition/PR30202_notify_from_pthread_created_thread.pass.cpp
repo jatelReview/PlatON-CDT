@@ -11,7 +11,7 @@
 
 // notify_all_at_thread_exit(...) requires move semantics to transfer the
 // unique_lock.
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <condition_variable>
 
@@ -28,6 +28,8 @@
 #include <chrono>
 #include <cassert>
 #include <pthread.h>
+
+#include "test_macros.h"
 
 std::condition_variable cv;
 std::mutex mut;

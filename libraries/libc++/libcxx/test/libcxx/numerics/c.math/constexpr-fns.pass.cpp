@@ -17,10 +17,12 @@
 // This fails with gcc because __builtin_isnan and friends, which libcpp_isnan
 // and friends call, are not themselves constexpr-evaluatable.
 //
-// UNSUPPORTED: c++98, c++03
-// XFAIL: gcc
+// UNSUPPORTED: c++03
+// XFAIL: gcc-9, gcc-8, gcc-7, gcc-6, gcc-5
 
 #include <cmath>
+
+#include "test_macros.h"
 
 static_assert(std::__libcpp_isnan_or_builtin(0.) == false, "");
 static_assert(std::__libcpp_isinf_or_builtin(0.0) == false, "");

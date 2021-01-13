@@ -7,18 +7,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-// MODULES_DEFINES: _LIBCPP_DEBUG=1
+// ADDITIONAL_COMPILE_FLAGS: -D_LIBCPP_DEBUG=1
 
 // Can't test the system lib because this test enables debug mode
-// UNSUPPORTED: with_system_cxx_lib
-
-#define _LIBCPP_DEBUG 1
+// UNSUPPORTED: with_system_cxx_lib=macosx
 
 #include <cstdlib>
 #include <string>
 #include <type_traits>
 #include <__debug>
 #include <cassert>
+
+#include "test_macros.h"
 
 void my_debug_function(std::__libcpp_debug_info const& info) {
   assert(info.__msg_ == std::string("foo"));

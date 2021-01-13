@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
 
 // XFAIL: dylib-has-no-bad_variant_access
 
@@ -28,6 +28,8 @@ public:
 #include <exception>
 #include <type_traits>
 #include <variant>
+
+#include "test_macros.h"
 
 int main(int, char**) {
   static_assert(std::is_base_of<std::exception, std::bad_variant_access>::value,

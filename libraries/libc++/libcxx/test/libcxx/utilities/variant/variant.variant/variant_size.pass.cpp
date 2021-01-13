@@ -7,7 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
+
+// GCC 5 pretends it supports C++17, but it doesn't properly support it
+// UNSUPPORTED: gcc-5
 
 // <variant>
 
@@ -17,6 +20,8 @@
 #include <type_traits>
 #include <utility>
 #include <variant>
+
+#include "test_macros.h"
 
 template <class Sequence>
 struct make_variant_imp;

@@ -6,12 +6,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: libcpp-no-exceptions
+// UNSUPPORTED: no-exceptions
 // XFAIL: with_system_cxx_lib=macosx10.11
 // XFAIL: with_system_cxx_lib=macosx10.10
 // XFAIL: with_system_cxx_lib=macosx10.9
-// XFAIL: with_system_cxx_lib=macosx10.8
-// XFAIL: with_system_cxx_lib=macosx10.7
 
 // <string>
 
@@ -21,6 +19,7 @@
 #include <cassert>
 #include <stdexcept>
 
+#include "test_macros.h"
 #include "min_allocator.h"
 
 template <class S>

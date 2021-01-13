@@ -9,7 +9,7 @@
 // 'do_bytes' throws a std::range_error unexpectedly
 // XFAIL: LIBCXX-WINDOWS-FIXME
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <locale>
 
@@ -20,6 +20,8 @@
 #include <locale>
 #include <codecvt>
 #include <cassert>
+
+#include "test_macros.h"
 
 int main(int, char**)
 {

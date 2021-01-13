@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <queue>
 
@@ -16,6 +16,7 @@
 #include <queue>
 #include <cassert>
 
+#include "test_macros.h"
 #include "test_allocator.h"
 #include "MoveOnly.h"
 

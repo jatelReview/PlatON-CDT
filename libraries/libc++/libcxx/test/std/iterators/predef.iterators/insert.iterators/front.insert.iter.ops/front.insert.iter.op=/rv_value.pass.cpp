@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <iterator>
 
@@ -19,6 +19,8 @@
 #include <list>
 #include <memory>
 #include <cassert>
+
+#include "test_macros.h"
 
 template <class C>
 void

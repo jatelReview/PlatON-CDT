@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 // <functional>
-// REQUIRES: c++98 || c++03 || c++11 || c++14
+// REQUIRES: c++03 || c++11 || c++14
 
 // template<cReturnable S, ClassType T>
 //   const_mem_fun_t<S,T>
@@ -17,6 +17,8 @@
 
 #include <functional>
 #include <cassert>
+
+#include "test_macros.h"
 
 struct A
 {

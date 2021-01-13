@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-// XFAIL: apple-darwin
+// XFAIL: darwin
 //
 // NetBSD does not support LC_MONETARY at the moment
 // XFAIL: netbsd
@@ -26,6 +26,7 @@
 #include <limits>
 #include <cassert>
 
+#include "test_macros.h"
 #include "platform_support.h" // locale name macros
 
 class Fnf

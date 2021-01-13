@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 //
-// UNSUPPORTED: libcpp-has-no-threads, c++98, c++03
+// UNSUPPORTED: libcpp-has-no-threads, c++03
 
 // <future>
 
@@ -17,6 +17,8 @@
 #include <future>
 #include <memory>
 #include <cassert>
+
+#include "test_macros.h"
 
 void func(std::promise<std::unique_ptr<int>> p)
 {

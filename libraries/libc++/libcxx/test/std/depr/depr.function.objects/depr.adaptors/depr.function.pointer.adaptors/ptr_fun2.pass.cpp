@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 // <functional>
-// REQUIRES: c++98 || c++03 || c++11 || c++14
+// REQUIRES: c++03 || c++11 || c++14
 
 // template <CopyConstructible Arg1, CopyConstructible Arg2, Returnable Result>
 // pointer_to_binary_function<Arg1,Arg2,Result>
@@ -18,6 +18,8 @@
 #include <functional>
 #include <type_traits>
 #include <cassert>
+
+#include "test_macros.h"
 
 double binary_f(int i, short j) {return i - j + .75;}
 

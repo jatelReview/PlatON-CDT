@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <tuple>
 
@@ -23,6 +23,8 @@
 
 #include <array>
 #include <tuple>
+
+#include "test_macros.h"
 
 // Use 1256 to try and blow the template instantiation depth for all compilers.
 typedef std::array<char, 1256> array_t;

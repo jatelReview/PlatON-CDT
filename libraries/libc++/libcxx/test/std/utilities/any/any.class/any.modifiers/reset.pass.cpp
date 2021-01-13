@@ -6,9 +6,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
 
-// XFAIL: dylib-has-no-bad_any_cast && !libcpp-no-exceptions
+// XFAIL: dylib-has-no-bad_any_cast && !no-exceptions
 
 // <any>
 
@@ -17,6 +17,7 @@
 #include <any>
 #include <cassert>
 
+#include "test_macros.h"
 #include "any_helpers.h"
 
 int main(int, char**)

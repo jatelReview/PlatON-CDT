@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <filesystem>
 
@@ -20,9 +20,11 @@
 // bool operator>=(directory_entry const&) const noexcept;
 
 
-#include "filesystem_include.hpp"
+#include "filesystem_include.h"
 #include <type_traits>
 #include <cassert>
+
+#include "test_macros.h"
 
 
 #define CHECK_OP(Op) \

@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 //  Because we don't have a functioning decltype in C++03
 
 // <memory>
@@ -20,6 +20,8 @@
 #include <memory>
 #include <sstream>
 #include <cassert>
+
+#include "test_macros.h"
 
 int main(int, char**)
 {

@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <functional>
 
@@ -18,6 +18,8 @@
 // https://bugs.llvm.org/show_bug.cgi?id=23141
 #include <functional>
 #include <type_traits>
+
+#include "test_macros.h"
 
 struct Fun
 {

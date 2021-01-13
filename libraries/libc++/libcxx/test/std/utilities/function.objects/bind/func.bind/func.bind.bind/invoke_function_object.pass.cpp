@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <functional>
 
@@ -18,6 +18,8 @@
 // https://bugs.llvm.org/show_bug.cgi?id=22003
 
 #include <functional>
+
+#include "test_macros.h"
 
 struct DummyUnaryFunction
 {

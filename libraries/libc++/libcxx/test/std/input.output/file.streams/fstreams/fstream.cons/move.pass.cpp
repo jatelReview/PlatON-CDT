@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <fstream>
 
@@ -17,6 +17,7 @@
 
 #include <fstream>
 #include <cassert>
+#include "test_macros.h"
 #include "platform_support.h"
 
 int main(int, char**)

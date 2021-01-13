@@ -10,18 +10,29 @@
 #ifdef __clang__
 #pragma clang diagnostic ignored "-W#warnings"
 #endif
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wcpp"
+#endif
 
 #include <ext/hash_set>
+#include <cassert>
 
-namespace __gnu_cxx {
-template class hash_set<int>;
+#include "test_macros.h"
+#include "count_new.h"
+
+void test_default_does_not_allocate() {
+  DisableAllocationGuard g;
+  ((void)g);
+  {
+    __gnu_cxx::hash_set<int> h;
+    assert(h.bucket_count() == 0);
+  }
+  {
+    __gnu_cxx::hash_multiset<int> h;
+    assert(h.bucket_count() == 0);
+  }
 }
 
 int main(int, char**) {
-  typedef __gnu_cxx::hash_set<int> Set;
-  Set s;
-  Set s2(s);
-  ((void)s2);
-
-  return 0;
+  test_default_does_not_allocate();
 }

@@ -6,13 +6,15 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
 
 // <any>
 
 // Check that the size and alignment of any are what we expect.
 
 #include <any>
+
+#include "test_macros.h"
 
 int main(int, char**)
 {

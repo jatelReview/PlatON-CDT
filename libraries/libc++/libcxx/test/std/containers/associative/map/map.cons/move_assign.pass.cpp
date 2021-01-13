@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <map>
 
@@ -17,6 +17,7 @@
 #include <map>
 #include <cassert>
 
+#include "test_macros.h"
 #include "MoveOnly.h"
 #include "../../../test_compare.h"
 #include "test_allocator.h"
@@ -102,7 +103,7 @@ int main(int, char**)
         assert(m3 == m2);
         assert(m3.get_allocator() == A(5));
         assert(m3.key_comp() == C(5));
-        assert(m1.empty());
+        LIBCPP_ASSERT(m1.empty());
     }
     {
         typedef std::pair<MoveOnly, MoveOnly> V;

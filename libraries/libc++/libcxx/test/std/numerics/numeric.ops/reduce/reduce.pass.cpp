@@ -7,7 +7,7 @@
 //===----------------------------------------------------------------------===//
 
 // <numeric>
-// UNSUPPORTED: c++98, c++03, c++11, c++14
+// UNSUPPORTED: c++03, c++11, c++14
 
 // template<class InputIterator>
 //     typename iterator_traits<InputIterator>::value_type
@@ -16,6 +16,7 @@
 #include <numeric>
 #include <cassert>
 
+#include "test_macros.h"
 #include "test_iterators.h"
 
 template <class Iter, class T>

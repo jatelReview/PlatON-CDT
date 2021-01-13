@@ -10,13 +10,15 @@
 // which copy the exception each time the exception_ptr is copied.
 // XFAIL: LIBCXX-WINDOWS-FIXME
 
-// UNSUPPORTED: libcpp-no-exceptions
+// UNSUPPORTED: no-exceptions
 // <exception>
 
 // exception_ptr current_exception();
 
 #include <exception>
 #include <cassert>
+
+#include "test_macros.h"
 
 struct A
 {

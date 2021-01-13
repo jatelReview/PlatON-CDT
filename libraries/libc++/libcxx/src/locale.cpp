@@ -39,14 +39,10 @@
 #include "__undef_macros"
 
 // On Linux, wint_t and wchar_t have different signed-ness, and this causes
-// lots of noise in the build log, but no bugs that I know of. 
+// lots of noise in the build log, but no bugs that I know of.
 #if defined(__clang__)
 #pragma clang diagnostic ignored "-Wsign-conversion"
 #endif
-
-extern "C" void platon_abort( unsigned int test, const char* msg  );
-size_t strftime(char*, size_t, const char*, const struct tm*) { platon_abort(false, "error: strftime called"); }
-size_t strftime_l(char*, size_t, const char*, const struct tm*, locale_t) { platon_abort(false, "error: strftime_l called"); }
 
 _LIBCPP_BEGIN_NAMESPACE_STD
 
@@ -540,7 +536,7 @@ locale::operator=(const locale& other)  _NOEXCEPT
 
 locale::locale(const char* name)
     : __locale_(name ? new __imp(name)
-                     : (__throw_runtime_error("locale constructed with null"), (__imp*)0))
+                     : (__throw_runtime_error("locale constructed with null"), nullptr))
 {
     __locale_->__add_shared();
 }
@@ -553,7 +549,7 @@ locale::locale(const string& name)
 
 locale::locale(const locale& other, const char* name, category c)
     : __locale_(name ? new __imp(*other.__locale_, name, c)
-                     : (__throw_runtime_error("locale constructed with null"), (__imp*)0))
+                     : (__throw_runtime_error("locale constructed with null"), nullptr))
 {
     __locale_->__add_shared();
 }
@@ -774,7 +770,7 @@ const ctype_base::mask ctype_base::xdigit;
 const ctype_base::mask ctype_base::blank;
 const ctype_base::mask ctype_base::alnum;
 const ctype_base::mask ctype_base::graph;
-    
+
 locale::id ctype<wchar_t>::id;
 
 ctype<wchar_t>::~ctype()
@@ -4383,7 +4379,9 @@ void
 __check_grouping(const string& __grouping, unsigned* __g, unsigned* __g_end,
                  ios_base::iostate& __err)
 {
-    if (__grouping.size() != 0)
+//  if the grouping pattern is empty _or_ there are no grouping bits, then do nothing
+//  we always have at least a single entry in [__g, __g_end); the end of the input sequence
+	if (__grouping.size() != 0 && __g_end - __g > 1)
     {
         reverse(__g, __g_end);
         const char* __ig = __grouping.data();

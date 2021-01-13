@@ -6,7 +6,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// UNSUPPORTED: c++98, c++03
+// UNSUPPORTED: c++03
 
 // <functional>
 
@@ -20,6 +20,8 @@
 #include <functional>
 #include <cmath>
 #include <cassert>
+
+#include "test_macros.h"
 
 float _pow(float a, float b)
 {

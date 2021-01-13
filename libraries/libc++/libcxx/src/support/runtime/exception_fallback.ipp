@@ -12,12 +12,7 @@
 namespace std {
 
 _LIBCPP_SAFE_STATIC static std::terminate_handler  __terminate_handler;
-#ifdef NO_ONTOLOGY_WASM
 _LIBCPP_SAFE_STATIC static std::unexpected_handler __unexpected_handler;
-#else
-typedef void (*unexpected_handler)();
-_LIBCPP_SAFE_STATIC static unexpected_handler __unexpected_handler;
-#endif
 
 
 // libcxxrt provides implementations of these functions itself.

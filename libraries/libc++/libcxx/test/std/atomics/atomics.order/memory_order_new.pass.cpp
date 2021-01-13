@@ -6,9 +6,11 @@
 //
 //===----------------------------------------------------------------------===//
 //
-// UNSUPPORTED: libcpp-has-no-threads, c++98, c++03, c++11, c++14, c++17
+// UNSUPPORTED: libcpp-has-no-threads, c++03, c++11, c++14, c++17
 
 #include <atomic>
+
+#include "test_macros.h"
 
 int main(int, char**)
 {
