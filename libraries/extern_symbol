@@ -46,6 +46,9 @@ platon_deploy
 platon_clone
 platon_confidential_tx_verify
 platon_variable_length_result
+bigint_binary_operators
+bigint_cmp
+bigint_sh
 
 platon_nano_time
 platon_debug_gas
