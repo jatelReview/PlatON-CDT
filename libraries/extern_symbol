@@ -52,5 +52,13 @@ bigint_cmp
 bigint_sh
 string_literal_operator
 
+bn256_g1_add
+bn256_g1_mul
+bn256_g2_add
+bn256_g2_mul
+bn256_pairing
+bn256_map_g1
+bn256_map_g2
+
 platon_nano_time
 platon_debug_gas

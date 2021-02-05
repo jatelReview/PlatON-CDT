@@ -387,6 +387,13 @@ int32_t platon_variable_length_result(uint8_t *result, size_t result_len);
 
     uint32_t string_literal_operator(const uint8_t *str, size_t str_len, uint8_t *result, size_t arr_size);
 
+    int bn256_g1_add(const uint8_t x1[32], const uint8_t y1[32], const uint8_t x2[32], const uint8_t y2[32], uint8_t x3[32], uint8_t y3[32]);
+    int bn256_g1_mul(const uint8_t x1[32], const uint8_t y1[32], const uint8_t bigint[32], uint8_t x2[32], uint8_t y2[32]);
+    int bn256_g2_add(const uint8_t x11[32], const uint8_t y11[32], const uint8_t x12[32], const uint8_t y12[32], const uint8_t x21[32], const uint8_t y21[32], const uint8_t x22[32], const uint8_t y22[32], uint8_t x31[32], uint8_t y31[32], uint8_t x32[32], uint8_t y32[32]);
+    int bn256_g2_mul(const uint8_t x11[32], const uint8_t y11[32], const uint8_t x12[32], const uint8_t y12[32], const uint8_t bigint[32], uint8_t x21[32], uint8_t y21[32], uint8_t x22[32], uint8_t y22[32]);
+    int bn256_pairing(uint8_t* x1[], uint8_t* y1[], uint8_t* x21[], uint8_t* y21[], uint8_t* x22[], uint8_t* y22[], size_t len);
+    int bn256_map_g1(const uint8_t fe[], size_t len, uint8_t x1[32], uint8_t y1[32]);
+    int bn256_map_g2(const uint8_t fe[], size_t len, uint8_t x11[32], uint8_t y11[32], uint8_t x12[32], uint8_t y12[32]);
 #ifdef __cplusplus
 }
 #endif

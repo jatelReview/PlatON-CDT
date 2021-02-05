@@ -137,6 +137,7 @@ func ExecFile(filePath string) error {
 
 	db := NewMockStateDB()
 	ctx := wvm.NewVMContext(&wvm.EVM{StateDB: db}, contractCtx, wvm.Config{}, params.GasTableConstantinople, db)
+
 	logger := log.WasmRoot()
 	logger.SetHandler(log.LvlFilterHandler(log.LvlDebug,
 		log.StreamHandler(os.Stdout, log.FormatFunc(func(r *log.Record) []byte {
@@ -164,6 +165,5 @@ func ExecFile(filePath string) error {
 		fmt.Fprintf(os.Stderr, info)
 		return errors.New(info)
 	}
-
 	return nil
 }
