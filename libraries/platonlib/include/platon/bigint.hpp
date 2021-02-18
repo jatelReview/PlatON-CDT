@@ -104,12 +104,12 @@ class WideInteger {
 
   // Conversion between byte streams
   WideInteger<Bits, Signed> &FromBigEndian(const std::vector<uint8_t> &bytes) {
-//    static_assert(!Signed, "Only unsigned numbers can do this");
-//    size_t bytes_size = bytes.size();
-//    size_t copy_size = std::min(arr_size, bytes_size);
-//    memset(arr_, 0, arr_size);
-//    memcpy(&arr_[arr_size - copy_size], &bytes[bytes_size - copy_size],
-//           copy_size);
+    static_assert(!Signed, "Only unsigned numbers can do this");
+    size_t bytes_size = bytes.size();
+    size_t copy_size = std::min(arr_size, bytes_size);
+    memset(arr_, 0, arr_size);
+    memcpy(&arr_[arr_size - copy_size], &bytes[bytes_size - copy_size],
+           copy_size);
     return *this;
   }
 
@@ -117,11 +117,11 @@ class WideInteger {
     static_assert(!Signed, "Only unsigned numbers can do this");
 
     std::vector<uint8_t> result;
-//    bool real_begin = false;
-//    for (int i = 0; i < arr_size; i++) {
-//      if (0 != arr_[i] && !real_begin) real_begin = true;
-//      if (real_begin) result.push_back(arr_[i]);
-//    }
+    bool real_begin = false;
+    for (int i = 0; i < arr_size; i++) {
+      if (0 != arr_[i] && !real_begin) real_begin = true;
+      if (real_begin) result.push_back(arr_[i]);
+    }
 
     return result;
   }
