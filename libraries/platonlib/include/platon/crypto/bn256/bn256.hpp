@@ -2,23 +2,52 @@
 #pragma once
 
 #include <span>
+#include "platon/assert.hpp"
 #include "platon/bigint.hpp"
 #include "platon/chain.hpp"
 #include "platon/print.hpp"
 namespace platon {
+namespace crypto {
 namespace bn256 {
+
+// Order is the number of elements in both G₁ and G₂: 36u⁴+36u³+18u²+6u+1.
+std::uint256_t Order =
+    "21888242871839275222246405745257275088548364400416034343698204186575808495617"_uint256;
+
+// P is a prime over which we form a basic field: 36u⁴+36u³+24u²+6u+1.
+std::uint256_t P =
+    "21888242871839275222246405745257275088696311157297823662689037894645226208583"_uint256;
+
+std::uint256_t AddMod(const std::uint256_t& x, const std::uint256_t& y,
+                      const std::uint256_t& k) {
+  std::uint512_t sum = x;
+  sum += y;
+  return sum % k;
+}
+
+std::uint256_t SubMod(const std::uint256_t& x, const std::uint256_t& y,
+                      const std::uint256_t& k) {
+  if (x > y) {
+    return AddMod(x - y, 0, Order);
+  }
+  std::uint512_t sub = x;
+  sub += Order;
+  sub -= y;
+  return sub % k;
+}
+
+std::uint256_t MulMod(const std::uint256_t& x, const std::uint256_t& y,
+                      const std::uint256_t& k) {
+  std::uint512_t mul = x;
+  mul *= y;
+  return mul % k;
+}
+
 class G2;
 class G1 {
  public:
-  /**
-   * @brief maps base field element into the G1 point
-   *
-   * @param k base field element
-   */
-  G1(const std::uint256_t& k) {
-    ::bn256_map_g1(k.Values(), 32, x_.Values(), y_.Values());
-  }
-
+  G1() : x_(0), y_(0) {}
+  
   G1(const std::uint256_t& x, const std::uint256_t& y) : x_(x), y_(y) {}
 
   G1(const G1& g) : x_(g.x_), y_(g.y_) {}
@@ -42,9 +71,9 @@ class G1 {
   }
 
   /**
-    * @brief to perform point addition on a curve defined over prime field
+    * @brief to perform point addition on a crypto defined over prime field
     *
-    * @param other point on a bn256 curve
+    * @param other point on a bn256 crypto
     * @return -1 argument error, 0 success
     *
     * Example:
@@ -56,18 +85,29 @@ class G1 {
     * G1
     g2("3510227910005969626168871163796842095937160976810256674232777209574668193517"_uint256,
         "2885800476071299445182650755020278501280179672256593791439003311512581969879"_uint256);
-    * g1.Add(g2);
+    * g1.AddStatus(g2);
     * @endcode
     *
     */
-  int Add(const G1& other) {
+  int AddStatus(const G1& other) {
     return ::bn256_g1_add(this->x_.Values(), this->y_.Values(),
                           other.x_.Values(), other.y_.Values(),
                           this->x_.Values(), this->y_.Values());
   }
 
   /**
-  * @brief  to perform point multiplication on a curve defined over prime field
+   * @brief to perform point addition on a crypto defined over prime field
+   *
+   * @param other point on a bn256 crypto
+   * @return object reference of self
+   */
+  G1& Add(const G1& other) {
+    platon_assert(AddStatus(other) == 0);
+    return *this;
+  }
+
+  /**
+  * @brief  to perform point multiplication on a crypto defined over prime field
   *
   * @param scalar scalar value
   * @return -1 argument error, 0 success
@@ -81,18 +121,46 @@ class G1 {
   * G1
   g2("3510227910005969626168871163796842095937160976810256674232777209574668193517"_uint256,
       "2885800476071299445182650755020278501280179672256593791439003311512581969879"_uint256);
-  * g1.ScalarMul(g2);
+  * g1.ScalarMulStatus(g2);
   * @endcode
   *
   */
-  int ScalarMul(const std::uint256_t& scalar) {
+  int ScalarMulStatus(const std::uint256_t& scalar) {
     return ::bn256_g1_mul(this->x_.Values(), this->y_.Values(), scalar.Values(),
                           this->x_.Values(), this->y_.Values());
   }
 
-  std::uint256_t& X() { return x_; }
+  /**
+   * @brief  to perform point multiplication on a crypto defined over prime
+   * field
+   *
+   * @param scalar scalar value
+   * @return object reference of self
+   */
+  G1& ScalarMul(const std::uint256_t& scalar) {
+    platon_assert(ScalarMulStatus(scalar) == 0);
+    return *this;
+  }
 
+  G1& Neg() {
+    if (x_ == 0 && y_ == 0) {
+      return *this;
+    }
+    y_ = P - (y_ % P);
+    return *this;
+  }
+
+  static G1 Base() { return {1, 2}; }
+  static G1 ScalarBaseMul(const std::uint256_t& a) {
+    G1 g(1, 2);
+    g.ScalarMul(a);
+    return g;
+  }
+
+  std::uint256_t& X() { return x_; }
+  const std::uint256_t& X() const { return x_; }
   std::uint256_t& Y() { return y_; }
+  const std::uint256_t& Y() const { return y_; }
   friend int pairing(const std::span<G1> g1, const std::span<G2> g2);
 
  private:
@@ -102,16 +170,7 @@ class G1 {
 
 class G2 {
  public:
-  /**
-   * @brief maps base field element into the G1 point
-   *
-   * @param k base field element
-   */
-  G2(const std::uint256_t& k) {
-    ::bn256_map_g2(k.Values(), 32, x_[0].Values(), y_[0].Values(),
-                   x_[1].Values(), y_[1].Values());
-  }
-
+  
   G2(const std::uint256_t& x1, const std::uint256_t& y1,
      const std::uint256_t& x2, const std::uint256_t& y2) {
     x_[0] = x1;
@@ -156,10 +215,10 @@ class G2 {
   }
 
   /**
-  * @brief to perform point addition on a curve twist defined over quadratic
+  * @brief to perform point addition on a crypto twist defined over quadratic
   extension of the base field
   *
-  * @param other twist point on a bn256 curve
+  * @param other twist point on a bn256 crypto
   * @return -1 argument error, 0 success
   *
   * Example:
@@ -178,11 +237,11 @@ class G2 {
         "6025506379932237465385214201206527812848555421743710598697345947300890198457"_uint256,
         "20618922630881857155986522435001570406346639915859901858546051417452761970477"_uint256,
         "12957125681690452415152069341785043351437829970534786922248294088023103741201"_uint256);
-  * g1.Add(g2);
+  * g1.AddStatus(g2);
   * @endcode
   *
   */
-  int Add(const G2& other) {
+  int AddStatus(const G2& other) {
     return ::bn256_g2_add(
         this->x_[0].Values(), this->y_[0].Values(), this->x_[1].Values(),
         this->y_[1].Values(), other.x_[0].Values(), other.y_[0].Values(),
@@ -191,7 +250,19 @@ class G2 {
   }
 
   /**
-  * @brief to perform point multiplication on a curve twist defined over
+    * @brief to perform point addition on a crypto twist defined over quadratic
+    extension of the base field
+    *
+    * @param other twist point on a bn256 crypto
+    * @return object reference of self
+   */
+  G2& Add(const G2& other) {
+    platon_assert(AddStatus(other) == 0);
+    return *this;
+  }
+
+  /**
+  * @brief to perform point multiplication on a crypto twist defined over
   quadratic extension of the base field
   *
   * @param scalar scalar value
@@ -213,15 +284,27 @@ class G2 {
         "6025506379932237465385214201206527812848555421743710598697345947300890198457"_uint256,
         "20618922630881857155986522435001570406346639915859901858546051417452761970477"_uint256,
         "12957125681690452415152069341785043351437829970534786922248294088023103741201"_uint256);
-  * g1.ScalarMul(g2);
+  * g1.ScalarMulStatus(g2);
   * @endcode
   *
   */
-  int ScalarMul(const std::uint256_t& scalar) {
+  int ScalarMulStatus(const std::uint256_t& scalar) {
     return ::bn256_g2_mul(
         this->x_[0].Values(), this->y_[0].Values(), this->x_[1].Values(),
         this->y_[1].Values(), scalar.Values(), this->x_[0].Values(),
         this->y_[0].Values(), this->x_[1].Values(), this->y_[1].Values());
+  }
+
+  /**
+    * @brief to perform point multiplication on a crypto twist defined over
+    quadratic extension of the base field
+    *
+    * @param scalar scalar value
+    * @return object reference of self
+    */
+  G2& ScalarMul(const std::uint256_t& scalar) {
+    platon_assert(ScalarMulStatus(scalar) == 0);
+    return *this;
   }
 
   std::uint256_t& X1() { return x_[0]; }
@@ -265,5 +348,7 @@ int pairing(const std::span<G1> g1, const std::span<G2> g2) {
 
   return ::bn256_pairing(x1, y1, x11, y11, x12, y12, len);
 }
+
 }  // namespace bn256
+}  // namespace crypto
 }  // namespace platon

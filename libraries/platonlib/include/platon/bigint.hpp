@@ -181,7 +181,7 @@ class WideInteger {
   }
 
   template <typename container, typename functor>
-  void ToBigEndian(container &result, const functor &func) {
+  void ToBigEndian(container &result, const functor &func) const {
     static_assert(!Signed, "Only unsigned numbers can do this");
     for (int i = 0; i < arr_size; ++i) {
       func(result, arr_[i]);

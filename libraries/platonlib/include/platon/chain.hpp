@@ -416,10 +416,6 @@ int bn256_g2_mul(const uint8_t x11[32], const uint8_t y11[32],
                  uint8_t x22[32], uint8_t y22[32]);
 int bn256_pairing(uint8_t *x1[], uint8_t *y1[], uint8_t *x21[], uint8_t *y21[],
                   uint8_t *x22[], uint8_t *y22[], size_t len);
-int bn256_map_g1(const uint8_t fe[], size_t len, uint8_t x1[32],
-                 uint8_t y1[32]);
-int bn256_map_g2(const uint8_t fe[], size_t len, uint8_t x11[32],
-                 uint8_t y11[32], uint8_t x12[32], uint8_t y12[32]);
 #ifdef __cplusplus
 }
 #endif
