@@ -307,6 +307,20 @@ class G2 {
     return *this;
   }
 
+  static G2 Base() {
+    return G2(
+        "11559732032986387107991004021392285783925812861821192530917403151452391805634"_uint256,
+        "10857046999023057135944570762232829481370756359578518086990519993285655852781"_uint256,
+        "4082367875863433681332203403145435568316851327593401208105741076214120093531"_uint256,
+        "8495653923123431417604973247489272438418190587263600148770280649306958101930"_uint256);
+  }
+
+  static G2 ScalarBaseMul(const std::uint256_t& a) {
+    G2 g = Base();
+    g.ScalarMul(a);
+    return g;
+  }
+
   std::uint256_t& X1() { return x_[0]; }
 
   std::uint256_t& Y1() { return y_[0]; }
@@ -322,12 +336,48 @@ class G2 {
   const std::uint256_t& X2() const { return x_[1]; }
 
   const std::uint256_t& Y2() const { return y_[1]; }
+
   friend int pairing(const std::span<G1> g1, const std::span<G2> g2);
 
  private:
   std::uint256_t x_[2];
   std::uint256_t y_[2];
 };
+
+inline G1 P1() { return G1(1, 2); }
+
+inline G2 P2() {
+  return G2(
+      "11559732032986387107991004021392285783925812861821192530917403151452391805634"_uint256,
+      "10857046999023057135944570762232829481370756359578518086990519993285655852781"_uint256,
+      "4082367875863433681332203403145435568316851327593401208105741076214120093531"_uint256,
+      "8495653923123431417604973247489272438418190587263600148770280649306958101930"_uint256);
+}
+
+inline G1 Neg(const G1& p) {
+  G1 p1 = p;
+  return p1.Neg();
+}
+
+inline G1 Addition(const G1& p1, const G1& p2) {
+  G1 res = p1;
+  return res.Add(p2);
+}
+
+inline G2 Addition(const G2& p1, const G2& p2) {
+  G2 r = p1;
+  return r.Add(p2);
+}
+
+inline G1 ScalarMul(const G1& p, const std::uint256_t& s) {
+  G1 r = p;
+  return r.ScalarMul(s);
+}
+
+inline G2 ScalarMul(const G2& p, const std::uint256_t& s) {
+  G2 r = p;
+  return r.ScalarMul(s);
+}
 
 /**
  * @brief  to perform a pairing operations between a set of pairs of (G1, G2)
