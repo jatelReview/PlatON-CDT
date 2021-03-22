@@ -47,7 +47,7 @@ class G2;
 class G1 {
  public:
   G1() : x_(0), y_(0) {}
-  
+
   G1(const std::uint256_t& x, const std::uint256_t& y) : x_(x), y_(y) {}
 
   G1(const G1& g) : x_(g.x_), y_(g.y_) {}
@@ -170,9 +170,8 @@ class G1 {
 
 class G2 {
  public:
-  
-  G2(const std::uint256_t& x1, const std::uint256_t& y1,
-     const std::uint256_t& x2, const std::uint256_t& y2) {
+  G2(const std::uint256_t& x1, const std::uint256_t& x2,
+     const std::uint256_t& y1, const std::uint256_t& y2) {
     x_[0] = x1;
     y_[0] = y1;
     x_[1] = x2;
@@ -243,10 +242,10 @@ class G2 {
   */
   int AddStatus(const G2& other) {
     return ::bn256_g2_add(
-        this->x_[0].Values(), this->y_[0].Values(), this->x_[1].Values(),
-        this->y_[1].Values(), other.x_[0].Values(), other.y_[0].Values(),
-        other.x_[1].Values(), other.y_[1].Values(), this->x_[0].Values(),
-        this->y_[0].Values(), this->x_[1].Values(), this->y_[1].Values());
+        this->x_[0].Values(), this->x_[1].Values(), this->y_[0].Values(),
+        this->y_[1].Values(), other.x_[0].Values(), other.x_[1].Values(),
+        other.y_[0].Values(), other.y_[1].Values(), this->x_[0].Values(),
+        this->x_[1].Values(), this->y_[0].Values(), this->y_[1].Values());
   }
 
   /**
@@ -257,6 +256,7 @@ class G2 {
     * @return object reference of self
    */
   G2& Add(const G2& other) {
+    //    AddStatus(other);
     platon_assert(AddStatus(other) == 0);
     return *this;
   }
@@ -290,9 +290,9 @@ class G2 {
   */
   int ScalarMulStatus(const std::uint256_t& scalar) {
     return ::bn256_g2_mul(
-        this->x_[0].Values(), this->y_[0].Values(), this->x_[1].Values(),
+        this->x_[0].Values(), this->x_[1].Values(), this->y_[0].Values(),
         this->y_[1].Values(), scalar.Values(), this->x_[0].Values(),
-        this->y_[0].Values(), this->x_[1].Values(), this->y_[1].Values());
+        this->x_[1].Values(), this->y_[0].Values(), this->y_[1].Values());
   }
 
   /**
@@ -314,6 +314,14 @@ class G2 {
   std::uint256_t& X2() { return x_[1]; }
 
   std::uint256_t& Y2() { return y_[1]; }
+
+  const std::uint256_t& X1() const { return x_[0]; }
+
+  const std::uint256_t& Y1() const { return y_[0]; }
+
+  const std::uint256_t& X2() const { return x_[1]; }
+
+  const std::uint256_t& Y2() const { return y_[1]; }
   friend int pairing(const std::span<G1> g1, const std::span<G2> g2);
 
  private:
@@ -346,7 +354,7 @@ int pairing(const std::span<G1> g1, const std::span<G2> g2) {
     y12[i] = g2[i].y_[1].Values();
   }
 
-  return ::bn256_pairing(x1, y1, x11, y11, x12, y12, len);
+  return ::bn256_pairing(x1, y1, x11, x12, y11, y12, len);
 }
 
 }  // namespace bn256

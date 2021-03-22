@@ -6,7 +6,7 @@
 #include <cstring>
 #include <string>
 #include "chain.hpp"
-
+#include "common.h"
 namespace std {
 template <size_t Bits, bool Signed>
 class WideInteger {
@@ -137,6 +137,10 @@ class WideInteger {
     } else {
       this->FromLittleEndian(bytes);
     }
+  }
+  
+  constexpr WideInteger(const std::string_view &hex) {
+    platon::fromHex<arr_size>(hex, arr_);
   }
 
   // Conversion between byte streams(little endian)
@@ -544,8 +548,9 @@ class WideInteger {
 
   constexpr bool Negative() const { return negative_; }
   constexpr void SetNegative(bool negative) { negative_ = negative; }
-
-  constexpr std::array<uint8_t, arr_size> Value() { return arr_; }
+  const uint8_t *Values() const { return arr_.data(); }
+  uint8_t *Values() {return arr_.data(); }
+  constexpr std::array<uint8_t, arr_size> Value() const { return arr_; }
 
  private:
   void Opposite() { negative_ = !negative_; }
