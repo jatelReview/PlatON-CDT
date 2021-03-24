@@ -333,6 +333,50 @@ TEST_CASE(uint256, encode) {
   ASSERT_EQ(new_bytes, test_bytes);
 }
 
+TEST_CASE(int256, rlp) {
+  GasUsed(__LINE__, "int256_rlp");
+  std::vector<std::int256_t> cases = {
+      0,
+      -1,
+      1,
+      -123456789,
+      std::numeric_limits<int128_t>::min(),
+      std::numeric_limits<uint128_t>::max(),
+      std::int256_t(-1) >> 1,
+      -std::int256_t("0x0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                     "FFFFFFFFF")};
+  for (auto res : cases) {
+    RLPStream r;
+    r << res;
+    RLP p(r.out());
+    std::int256_t a2;
+    fetch(p, a2);
+    ASSERT_EQ(a2, res, "");
+  }
+}
+
+TEST_CASE(uint256, rlp) {
+  GasUsed(__LINE__, "uint256_rlp");
+  std::vector<std::uint256_t> cases = {
+      0,
+      -1,
+      1,
+      123456789,
+      std::numeric_limits<uint64_t>::min(),
+      std::numeric_limits<uint128_t>::max(),
+      std::uint256_t(1) >> 1,
+      std::uint256_t("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+                     "FFFFFFFFF")};
+  for (auto res : cases) {
+    RLPStream r;
+    r << res;
+    RLP p(r.out());
+    std::uint256_t a2;
+    fetch(p, a2);
+    ASSERT_EQ(a2, res, "");
+  }
+  
+}
 UNITTEST_MAIN() {
   RUN_TEST(uint256, compile);
   RUN_TEST(uint256, assign);
@@ -353,4 +397,6 @@ UNITTEST_MAIN() {
   RUN_TEST(uint512, overflow);
   RUN_TEST(uint256, exp);
   RUN_TEST(uint256, encode);
+  RUN_TEST(int256, rlp);
+  RUN_TEST(uint256, rlp);
 }

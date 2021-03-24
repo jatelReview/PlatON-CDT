@@ -167,7 +167,7 @@ class WideInteger {
   // Conversion between byte streams(big endian)
   template <typename container>
   constexpr value_type &FromBigEndian(const container &bytes) {
-    static_assert(!Signed, "Only unsigned numbers can do this");
+//    static_assert(!Signed, "Only unsigned numbers can do this");
     arr_.fill(0);
     size_t len = bytes.size();
     if (len >= arr_size) {
@@ -270,7 +270,7 @@ class WideInteger {
   WIDEINTEGER_ASSIGN_BUILT_IN_TYPE_OPERATOR(operator-=, value_type &)
 
   constexpr value_type operator-() const {
-    static_assert(Signed, "Only signed numbers can do this");
+//    static_assert(Signed, "Only signed numbers can do this");
     value_type result = *this;
     result.Opposite();
     return result;

@@ -9,9 +9,9 @@
 #include <boost/mp11/tuple.hpp>
 
 #include <tuple>
+#include "bigint.hpp"
 #include "panic.hpp"
 #include "platon/RLP.h"
-#include "bigint.hpp"
 
 namespace platon {
 
@@ -100,8 +100,9 @@ inline void fetch(const RLP& rlp, bool& value) { value = rlp.toBool(); }
 
 inline void fetch(const RLP& rlp, bytes& value) { value = rlp.toBytes(); }
 
-inline void fetch(const RLP& rlp, bytesConstRef& value) { value = rlp.toBytesConstRef(); }
-
+inline void fetch(const RLP& rlp, bytesConstRef& value) {
+  value = rlp.toBytesConstRef();
+}
 
 template <class T>
 inline void fetch(const RLP& rlp, std::vector<T>& ret) {
@@ -205,16 +206,11 @@ inline void fetch(const RLP& rlp, std::tuple<Args...>& t) {
 
 template <size_t Bits, bool Signed>
 inline void fetch(const RLP& rlp, std::WideInteger<Bits, Signed>& s) {
-  auto iter = rlp.begin();
-  bool negative;
-  fetch(*iter, negative);
-
-  std::vector<uint8_t> temp;
-  ++iter;
-  fetch(*iter, temp);
-
-  s.FromBigEndian(temp);
-  s.SetNegative(negative);
+  if (!Signed) {
+    s.FromBigEndian(rlp.toBytes());
+  } else {
+    s.FromBigEndian(rlp.toBytes());
+    s = (s >> 1) ^ -(s & 1);
+  }
 }
-
 }  // namespace platon

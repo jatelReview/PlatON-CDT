@@ -19,12 +19,12 @@
 #include <set>
 #include <unordered_set>
 #include <vector>
+#include "bigint.hpp"
 #include "bytes_buffer.hpp"
 #include "common.h"
 #include "fixedhash.hpp"
 #include "panic.hpp"
 #include "vector_ref.h"
-#include "bigint.hpp"
 
 namespace platon {
 
@@ -724,19 +724,13 @@ class RLPStream {
 
   template <size_t Bits, bool Signed>
   RLPStream& operator<<(const std::WideInteger<Bits, Signed>& s) {
-    // get nagative flag
-    bool negative = s.Negative();
-
-    // get big endian data
-    std::vector<uint8_t> temp;
-    auto func = [](std::vector<uint8_t>& result, uint8_t one) {
-      result.push_back(one);
-    };
-    s.ToBigEndian(temp, func);
-
-    appendList(2);
-    *this << negative << temp;
-
+    if (!Signed) {
+      *this << bytesConstRef(s.Values(), s.arr_size);
+    } else {
+      size_t rsh = Bits - 1;
+      std::WideInteger<Bits, Signed> r = (s << 1) ^ (s >> rsh);
+      *this << bytesConstRef(r.Values(), r.arr_size);
+    }
     return *this;
   }
 
