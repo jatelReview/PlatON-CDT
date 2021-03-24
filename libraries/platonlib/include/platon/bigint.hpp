@@ -552,6 +552,40 @@ class WideInteger {
   uint8_t *Values() {return arr_.data(); }
   constexpr std::array<uint8_t, arr_size> Value() const { return arr_; }
 
+  size_t ValidBytes() const {
+    size_t num = 0;
+    if (arr_.size() <= 4) {
+      for (auto a : arr_) {
+        if (a != 0) {
+          break;}
+        ++num;
+      }
+      return arr_.size() - num;
+    }
+    size_t step = 4;
+    for (size_t i = 0; i+step <= arr_.size(); i+=step) {
+      uint32_t val = *(uint32_t*)(arr_.data()+i);
+      if (val != 0) {
+        for (; i < arr_.size(); i++) {
+          if (arr_[i] != 0) {
+            break;
+          }
+          ++num;
+        }
+        break;
+      }
+      num += 4;
+    }
+    if (num+1 < arr_.size() && arr_[num] != 0) {
+      for (size_t i = num +1; i < arr_.size(); i++) {
+        if (arr_[i] != 0) {
+          break;
+        }
+        ++num;
+      }
+    }
+    return arr_.size() - num;
+  }
  private:
   void Opposite() { negative_ = !negative_; }
 
