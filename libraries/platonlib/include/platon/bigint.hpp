@@ -138,7 +138,7 @@ class WideInteger {
       this->FromLittleEndian(bytes);
     }
   }
-  
+
   constexpr WideInteger(const std::string_view &hex) {
     platon::fromHex<arr_size>(hex, arr_);
   }
@@ -167,7 +167,7 @@ class WideInteger {
   // Conversion between byte streams(big endian)
   template <typename container>
   constexpr value_type &FromBigEndian(const container &bytes) {
-//    static_assert(!Signed, "Only unsigned numbers can do this");
+    //    static_assert(!Signed, "Only unsigned numbers can do this");
     arr_.fill(0);
     size_t len = bytes.size();
     if (len >= arr_size) {
@@ -270,7 +270,7 @@ class WideInteger {
   WIDEINTEGER_ASSIGN_BUILT_IN_TYPE_OPERATOR(operator-=, value_type &)
 
   constexpr value_type operator-() const {
-//    static_assert(Signed, "Only signed numbers can do this");
+    //    static_assert(Signed, "Only signed numbers can do this");
     value_type result = *this;
     result.Opposite();
     return result;
@@ -549,7 +549,7 @@ class WideInteger {
   constexpr bool Negative() const { return negative_; }
   constexpr void SetNegative(bool negative) { negative_ = negative; }
   const uint8_t *Values() const { return arr_.data(); }
-  uint8_t *Values() {return arr_.data(); }
+  uint8_t *Values() { return arr_.data(); }
   constexpr std::array<uint8_t, arr_size> Value() const { return arr_; }
 
   size_t ValidBytes() const {
@@ -557,14 +557,15 @@ class WideInteger {
     if (arr_.size() <= 4) {
       for (auto a : arr_) {
         if (a != 0) {
-          break;}
+          break;
+        }
         ++num;
       }
       return arr_.size() - num;
     }
     size_t step = 4;
-    for (size_t i = 0; i+step <= arr_.size(); i+=step) {
-      uint32_t val = *(uint32_t*)(arr_.data()+i);
+    for (size_t i = 0; i + step <= arr_.size(); i += step) {
+      uint32_t val = *(uint32_t *)(arr_.data() + i);
       if (val != 0) {
         for (; i < arr_.size(); i++) {
           if (arr_[i] != 0) {
@@ -576,8 +577,8 @@ class WideInteger {
       }
       num += 4;
     }
-    if (num+1 < arr_.size() && arr_[num] != 0) {
-      for (size_t i = num +1; i < arr_.size(); i++) {
+    if (num + 1 < arr_.size() && arr_[num] != 0) {
+      for (size_t i = num + 1; i < arr_.size(); i++) {
         if (arr_[i] != 0) {
           break;
         }
@@ -586,6 +587,7 @@ class WideInteger {
     }
     return arr_.size() - num;
   }
+
  private:
   void Opposite() { negative_ = !negative_; }
 

@@ -725,7 +725,7 @@ class RLPStream {
   template <size_t Bits, bool Signed>
   RLPStream& operator<<(const std::WideInteger<Bits, Signed>& s) {
     if (!Signed) {
-      size_t size = s.ValidBytes(); 
+      size_t size = s.ValidBytes();
       *this << bytesConstRef(s.Values() + s.arr_size - size, size);
     } else {
       size_t rsh = Bits - 1;

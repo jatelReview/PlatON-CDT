@@ -379,21 +379,23 @@ TEST_CASE(uint256, rlp) {
 
 TEST_CASE(uint256, valid_bytes) {
   GasUsed(__LINE__, "valid_bytes");
-  
-  std::vector<std::pair<std::uint256_t, size_t>> cases = {
-      {0,0},
-      {1,1} ,
-      {0xFF, 1},
-      {0xFFFF,2},
-      {0xFFFFFF, 3},
-      {std::numeric_limits<uint128_t>::max(),16},
-      {std::uint256_t("0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
-                     "FFFFFFFFF"), 32}
-  };
-  for (auto res : cases) {
-    ASSERT_EQ(res.first.ValidBytes(), res.second, "cal bytes error", toHex(res.first.Value()), "actual:", res.first.ValidBytes(), "expect:", res.second);
-  }
 
+  std::vector<std::pair<std::uint256_t, size_t>> cases = {
+      {0, 0},
+      {1, 1},
+      {0xFF, 1},
+      {0xFFFF, 2},
+      {0xFFFFFF, 3},
+      {std::numeric_limits<uint128_t>::max(), 16},
+      {std::uint256_t(
+           "0xFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF"
+           "FFFFFFFFF"),
+       32}};
+  for (auto res : cases) {
+    ASSERT_EQ(res.first.ValidBytes(), res.second, "cal bytes error",
+              toHex(res.first.Value()), "actual:", res.first.ValidBytes(),
+              "expect:", res.second);
+  }
 }
 UNITTEST_MAIN() {
   RUN_TEST(uint256, compile);

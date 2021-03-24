@@ -12,8 +12,8 @@
 #include <vector>
 
 #include "RLP.h"
-#include "common.h"
 #include "bigint.hpp"
+#include "common.h"
 
 namespace platon {
 
