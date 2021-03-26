@@ -397,6 +397,16 @@ TEST_CASE(uint256, valid_bytes) {
               "expect:", res.second);
   }
 }
+
+TEST_CASE(uint256, limit) {
+  ASSERT_EQ(std::numeric_limits<std::uint256_t>::is_signed, false);
+  ASSERT_EQ(std::numeric_limits<std::uint256_t>::is_integer, true);
+  ASSERT_EQ(std::numeric_limits<std::uint256_t>::is_iec559, false);
+  ASSERT_EQ(std::numeric_limits<std::uint256_t>::min(), 0);
+  ASSERT_EQ(
+      std::numeric_limits<std::uint256_t>::max(),
+      "115792089237316195423570985008687907853269984665640564039457584007913129639935"_uint256);
+}
 UNITTEST_MAIN() {
   RUN_TEST(uint256, compile);
   RUN_TEST(uint256, assign);
@@ -420,4 +430,5 @@ UNITTEST_MAIN() {
   RUN_TEST(int256, rlp);
   RUN_TEST(uint256, rlp);
   RUN_TEST(uint256, valid_bytes);
+  RUN_TEST(uint256, limit);
 }
