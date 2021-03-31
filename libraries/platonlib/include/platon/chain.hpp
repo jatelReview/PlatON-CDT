@@ -405,17 +405,17 @@ int bn256_g1_add(const uint8_t x1[32], const uint8_t y1[32],
                  uint8_t y3[32]);
 int bn256_g1_mul(const uint8_t x1[32], const uint8_t y1[32],
                  const uint8_t bigint[32], uint8_t x2[32], uint8_t y2[32]);
-int bn256_g2_add(const uint8_t x11[32], const uint8_t y11[32],
-                 const uint8_t x12[32], const uint8_t y12[32],
-                 const uint8_t x21[32], const uint8_t y21[32],
-                 const uint8_t x22[32], const uint8_t y22[32], uint8_t x31[32],
-                 uint8_t y31[32], uint8_t x32[32], uint8_t y32[32]);
-int bn256_g2_mul(const uint8_t x11[32], const uint8_t y11[32],
-                 const uint8_t x12[32], const uint8_t y12[32],
-                 const uint8_t bigint[32], uint8_t x21[32], uint8_t y21[32],
-                 uint8_t x22[32], uint8_t y22[32]);
-int bn256_pairing(uint8_t *x1[], uint8_t *y1[], uint8_t *x21[], uint8_t *y21[],
-                  uint8_t *x22[], uint8_t *y22[], size_t len);
+int bn256_g2_add(const uint8_t x11[32], const uint8_t x12[32],
+                 const uint8_t y11[32], const uint8_t y12[32],
+                 const uint8_t x21[32], const uint8_t x22[32],
+                 const uint8_t y21[32], const uint8_t y22[32], uint8_t x31[32],
+                 uint8_t x32[32], uint8_t y31[32], uint8_t y32[32]);
+int bn256_g2_mul(const uint8_t x11[32], const uint8_t x12[32],
+                 const uint8_t y11[32], const uint8_t y12[32],
+                 const uint8_t bigint[32], uint8_t x21[32], uint8_t x22[32],
+                 uint8_t y21[32], uint8_t y22[32]);
+int bn256_pairing(uint8_t *x1[], uint8_t *y1[], uint8_t *x21[], uint8_t *x22[],
+                  uint8_t *y21[], uint8_t *y22[], size_t len);
 #ifdef __cplusplus
 }
 #endif

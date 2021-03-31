@@ -628,6 +628,60 @@ string to_string(const WideInteger<Bits, Signed> &value) {
   return result;
 }
 
+template <size_t Bits, bool Signed>
+class numeric_limits<WideInteger<Bits, Signed>> {
+  // static constexpr int Bits =256;
+  //  static const bool Signed =false;
+  typedef WideInteger<Bits, Signed> type;
+
+ public:
+  static const bool is_specialized = true;
+  static type min() noexcept { return is_signed ? type(-1) << digits : 0; }
+  static type max() noexcept {
+    if (is_signed) {
+      return ((type(1) << digits) - 1);
+    } else {
+      std::vector<uint8_t> value_array(Bits / 8, 0xFF);
+      return type().FromBigEndian(value_array);
+    }
+  }
+  static type lowest() _NOEXCEPT { return min(); }
+
+  static const int digits = static_cast<int>(Bits - Signed);
+  static const int digits10 = digits * 3 / 10;
+  static const int max_digits10 = 0;
+  static const bool is_signed = Signed;
+  static const bool is_integer = true;
+  static const bool is_exact = true;
+  static const int radix = 2;
+  static type epsilon() _NOEXCEPT { return 0; }
+  static type round_error() _NOEXCEPT { return 0; }
+
+  static const int min_exponent = 0;
+  static const int min_exponent10 = 0;
+  static const int max_exponent = 0;
+  static const int max_exponent10 = 0;
+
+  static const bool has_infinity = false;
+  static const bool has_quiet_NaN = false;
+  static const bool has_signaling_NaN = false;
+  static const float_denorm_style has_denorm =
+      float_denorm_style::denorm_absent;
+  static const bool has_denorm_loss = false;
+  static type infinity() _NOEXCEPT { return 0; }
+  static type quiet_NaN() _NOEXCEPT { return 0; }
+  static type signaling_NaN() _NOEXCEPT { return 0; }
+  static type denorm_min() _NOEXCEPT { return 0; }
+
+  static const bool is_iec559 = false;
+  static const bool is_bounded = true;
+  static const bool is_modulo = !Signed;
+
+  static const bool traps = true;
+  static const bool tinyness_before = false;
+  static const float_round_style round_style =
+      float_round_style::round_toward_zero;
+};
 }  // namespace std
 
 inline std::int256_t operator"" _int256(const char *str_value, size_t n) {
