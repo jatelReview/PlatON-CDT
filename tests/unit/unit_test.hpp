@@ -41,7 +41,7 @@ class GasUsed{
       result += " line: " + std::to_string(line_);
     }
 
-    result += " gas used: " + std::to_string(end - start_);
+    result += " gas used: " + std::to_string(start_ - end);
 
     printf("%s\t\n", result.c_str());
   }
