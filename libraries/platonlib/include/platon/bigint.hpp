@@ -7,6 +7,7 @@
 #include <string>
 #include "chain.hpp"
 #include "common.h"
+#include <string_view>
 namespace std {
 template <size_t Bits, bool Signed>
 class WideInteger {
@@ -647,39 +648,39 @@ class numeric_limits<WideInteger<Bits, Signed>> {
   }
   static type lowest() _NOEXCEPT { return min(); }
 
-  static const int digits = static_cast<int>(Bits - Signed);
-  static const int digits10 = digits * 3 / 10;
-  static const int max_digits10 = 0;
-  static const bool is_signed = Signed;
-  static const bool is_integer = true;
-  static const bool is_exact = true;
-  static const int radix = 2;
+  static constexpr int digits = static_cast<int>(Bits - Signed);
+  static constexpr int digits10 = digits * 3 / 10;
+  static constexpr int max_digits10 = 0;
+  static constexpr bool is_signed = Signed;
+  static constexpr bool is_integer = true;
+  static constexpr bool is_exact = true;
+  static constexpr int radix = 2;
   static type epsilon() _NOEXCEPT { return 0; }
   static type round_error() _NOEXCEPT { return 0; }
 
-  static const int min_exponent = 0;
-  static const int min_exponent10 = 0;
-  static const int max_exponent = 0;
-  static const int max_exponent10 = 0;
+  static constexpr int min_exponent = 0;
+  static constexpr int min_exponent10 = 0;
+  static constexpr int max_exponent = 0;
+  static constexpr int max_exponent10 = 0;
 
-  static const bool has_infinity = false;
-  static const bool has_quiet_NaN = false;
-  static const bool has_signaling_NaN = false;
+  static constexpr bool has_infinity = false;
+  static constexpr bool has_quiet_NaN = false;
+  static constexpr bool has_signaling_NaN = false;
   static const float_denorm_style has_denorm =
       float_denorm_style::denorm_absent;
-  static const bool has_denorm_loss = false;
+  static constexpr bool has_denorm_loss = false;
   static type infinity() _NOEXCEPT { return 0; }
   static type quiet_NaN() _NOEXCEPT { return 0; }
   static type signaling_NaN() _NOEXCEPT { return 0; }
   static type denorm_min() _NOEXCEPT { return 0; }
 
-  static const bool is_iec559 = false;
-  static const bool is_bounded = true;
-  static const bool is_modulo = !Signed;
+  static constexpr bool is_iec559 = false;
+  static constexpr bool is_bounded = true;
+  static constexpr bool is_modulo = !Signed;
 
-  static const bool traps = true;
-  static const bool tinyness_before = false;
-  static const float_round_style round_style =
+  static constexpr bool traps = true;
+  static constexpr bool tinyness_before = false;
+  static constexpr float_round_style round_style =
       float_round_style::round_toward_zero;
 };
 }  // namespace std
