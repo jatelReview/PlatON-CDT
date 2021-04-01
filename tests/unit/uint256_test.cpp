@@ -18,8 +18,12 @@ TEST_CASE(uint256, assign) {
   std::uint256_t other;
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = other;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, other);
@@ -31,8 +35,12 @@ TEST_CASE(uint256, add) {
   std::uint256_t other(243);
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = orign + other;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, std::uint256_t(445));
@@ -51,8 +59,12 @@ TEST_CASE(uint256, sub) {
   std::uint256_t other(24);
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = orign - other;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, std::uint256_t(178));
@@ -70,8 +82,12 @@ TEST_CASE(uint256, multip) {
   std::uint256_t other(24);
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = orign * other;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, std::uint256_t(4848));
@@ -89,8 +105,12 @@ TEST_CASE(uint256, division) {
   std::uint256_t other(24);
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = orign / other;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, std::uint256_t(8));
@@ -109,8 +129,12 @@ TEST_CASE(uint256, mod) {
   std::uint256_t other(10);
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = orign % other;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, std::uint256_t(3));
@@ -129,8 +153,12 @@ TEST_CASE(uint256, and) {
   std::uint256_t other(100);
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = orign & other;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, std::uint256_t(100));
@@ -148,8 +176,12 @@ TEST_CASE(uint256, or) {
   std::uint256_t other(100);
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = orign | other;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, std::uint256_t(503));
@@ -168,8 +200,12 @@ TEST_CASE(uint256, xor) {
   std::uint256_t other(100);
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = orign ^ other;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, std::uint256_t(403));
@@ -188,8 +224,12 @@ TEST_CASE(uint256, left_shift) {
   std::uint256_t other(100);
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = orign << 6;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, std::uint256_t(32192));
@@ -203,8 +243,12 @@ TEST_CASE(uint256, right_shift) {
   std::uint256_t other(100);
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = orign >> 2;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, std::uint256_t(125));
@@ -224,8 +268,12 @@ TEST_CASE(int256_t, add) {
   std::int256_t other(-243);
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign = orign + other;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(orign, std::int256_t(-41));
@@ -240,8 +288,12 @@ TEST_CASE(int256_t, compare) {
   bool compare_result;
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     compare_result = orign < other;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(compare_result, false);
@@ -257,8 +309,17 @@ TEST_CASE(int256_t, compare) {
 }
 
 TEST_CASE(uint256, overflow) {
-  std::uint256_t orign =
+  std::uint256_t orign;
+  const char * fn = "string_convert";
+  {
+    uint64_t start = platon_gas();
+    orign =
       "41234123412341234123412341234123412341234123412341234123412341234123412341234"_uint256;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
+  }
   std::uint256_t other = orign;
   std::uint256_t result = orign + other;
   ASSERT_EQ(
@@ -271,9 +332,13 @@ TEST_CASE(uint512, overflow) {
   std::uint512_t orign;
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     orign =
         "3412341234123412341234123412341234123412341234123412341234123412341234123412341234123412341234123412341234123412341234123412341234123412341234123412341234"_uint512;
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   std::uint512_t other = orign;
@@ -291,8 +356,12 @@ TEST_CASE(uint256, exp) {
   std::uint256_t result;
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     result = Exp(left, right, mod);
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(result, std::uint256_t(6));
@@ -304,8 +373,12 @@ TEST_CASE(uint256, encode) {
   std::vector<uint8_t> test_bytes{0x01, 0x02};
 
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     result.FromBigEndian(test_bytes);
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   ASSERT_EQ(result, std::uint256_t(258));
@@ -315,8 +388,12 @@ TEST_CASE(uint256, encode) {
     result.push_back(one);
   };
   {
-    GasUsed(__LINE__, fn);
+    uint64_t start = platon_gas();
     result.ToBigEndian(new_bytes, func);
+    uint64_t end = platon_gas();
+    std::string result = std::string(fn) + " function, line: " + std::to_string(__LINE__);
+    result += ", gas used: " + std::to_string(start - end);
+    printf("%s\t\n", result.c_str());
   }
 
   auto it = new_bytes.begin();
