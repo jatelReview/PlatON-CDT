@@ -220,6 +220,14 @@ class RLP {
   explicit operator int128_t() const { return toSignedInt<int128_t>(); }
   explicit operator float() const { return toFloat(); }
   explicit operator double() const { return toDouble(); }
+  template <size_t Bits, bool Signed>
+  explicit operator std::WideInteger<Bits, Signed>() const{
+      if constexpr(Signed){
+        return toSignedInt<std::WideInteger<Bits, Signed>>();
+      } else {
+        return toInt<std::WideInteger<Bits, Signed>>();
+      }
+  }
   template <unsigned N>
   explicit operator FixedHash<N>() const {
     return toHash<FixedHash<N>>();

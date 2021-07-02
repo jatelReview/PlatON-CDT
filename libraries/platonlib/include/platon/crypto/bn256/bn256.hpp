@@ -187,6 +187,7 @@ class G1 {
  private:
   std::uint256_t x_;
   std::uint256_t y_;
+  PLATON_SERIALIZE(G1, (x_)(y_))
 };
 
 class G2 {
@@ -362,8 +363,9 @@ class G2 {
   friend int pairing(const std::span<G1> g1, const std::span<G2> g2);
 
  private:
-  std::uint256_t x_[2];
-  std::uint256_t y_[2];
+  std::array<std::uint256_t, 2> x_;
+  std::array<std::uint256_t, 2> y_;
+  PLATON_SERIALIZE(G2, (x_)(y_))
 };
 
 inline G1 P1() { return G1(1, 2); }
